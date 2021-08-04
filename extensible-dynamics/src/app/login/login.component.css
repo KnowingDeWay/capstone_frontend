@@ -1,0 +1,19 @@
+mat-toolbar {
+  text-align: center;
+}
+
+mat-form-field {
+  padding-bottom: 1%;
+}
+
+.login-form {
+  padding-top: 5%;
+}
+
+.pass-field {
+  padding-bottom: 5%;
+}
+
+.main-div {
+  background-color: #3f51b5;
+}
