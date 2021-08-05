@@ -1,9 +1,14 @@
+import { CookieService } from 'ngx-cookie-service';
 import { LoginCredentials } from './../models/request-models';
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../services/authentication.service';
 import { AuthResponse } from './../models/response-models';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { environment } from '../../environments/environment';
+import { AuthGuard } from '../../guards/auth-guard';
+import { Router } from '@angular/router';
+
 
 export interface LoginDialogData {
   message: string
@@ -13,7 +18,7 @@ export interface LoginDialogData {
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  providers: [AuthenticationService]
+  providers: [AuthenticationService, AuthGuard]
 })
 export class LoginComponent implements OnInit {
 
@@ -35,11 +40,16 @@ export class LoginComponent implements OnInit {
 
   loadingState: boolean;
 
-  constructor(private authService: AuthenticationService, public loginDialog: MatDialog) {
+  constructor(private authService: AuthenticationService, public loginDialog: MatDialog,
+    private cookieService: CookieService, private authGuard: AuthGuard, private router: Router) {
     this.loadingState = false;
   }
 
   ngOnInit(): void {
+    if(this.authGuard.canActivate()) {
+      let encodedToken = this.cookieService.get(environment.tokenCookieName);
+      this.router.navigateByUrl('instructoruserhome');
+    }
   }
 
   public async login() {
@@ -48,6 +58,12 @@ export class LoginComponent implements OnInit {
     // Display dialog box if no token is received
     if(authResponse.responseToken.length === 0) {
       this.openDialog(authResponse.responseMessage);
+    }
+    else {
+      // Otherwise add a cookie with the app token
+      this.cookieService.set(environment.tokenCookieName, authResponse.responseToken);
+      let encodedToken = this.cookieService.get(environment.tokenCookieName);
+      this.router.navigateByUrl('instructoruserhome');
     }
     this.loadingState = false;
   }

@@ -6,7 +6,8 @@ export const port = 44366;
 
 export const environment = {
   production: false,
-  baseUrl: `https://localhost:${port}`
+  baseUrl: `https://localhost:${port}`,
+  tokenCookieName: 'app_token'
 };
 
 /*
