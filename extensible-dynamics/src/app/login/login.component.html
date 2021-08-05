@@ -3,12 +3,23 @@
         <mat-toolbar color="primary">Login</mat-toolbar>
         <form fxLayoutAlign="stretch" fxLayout="column" class="login-form">
             <mat-form-field>
-                <input matInput placeholder="Username">
+                <input matInput [formControl]="userFormControl" (ngModelChange)="updateUsername($event)" placeholder="Username">
+                <mat-error *ngIf="userFormControl.invalid">
+                  Enter a <strong>valid</strong> username
+                </mat-error>
             </mat-form-field>
             <mat-form-field class="pass-field">
-                <input matInput type="password" placeholder="Password">
+                <input matInput [formControl]="passwordFormControl" (ngModelChange)="updatePassword($event)" type="password" placeholder="Password">
+                <mat-error *ngIf="passwordFormControl.invalid">
+                  Password must be <strong>at least</strong> than 8 characters
+                </mat-error>
             </mat-form-field>
-            <button mat-raised-button type="submit" class="login-sub-button" color="primary">Login</button>
+            <div class="login-btn-ctr">
+              <div class="spinner-ctr" *ngIf="loadingState">
+                <mat-spinner diameter="25"></mat-spinner>
+              </div>
+              <button mat-raised-button type="button" (click)="login()" [disabled]="userFormControl.invalid || passwordFormControl.invalid || loadingState" class="login-sub-button" color="primary">Login</button>
+            </div>
         </form>
     </mat-card>
 </div>
