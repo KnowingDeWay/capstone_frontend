@@ -18,7 +18,7 @@ export interface LoginDialogData {
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  providers: [AuthenticationService, AuthGuard]
+  providers: [AuthGuard]
 })
 export class LoginComponent implements OnInit {
 
@@ -46,14 +46,12 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.authGuard.canActivate()) {
-      let encodedToken = this.cookieService.get(environment.tokenCookieName);
-      this.router.navigateByUrl('instructoruserhome');
-    }
+    this.redirectLoggedInUser;
   }
 
   public async login() {
     this.loadingState = true;
+    this.redirectLoggedInUser; // If the user is logged in already, don't log him in again
     let authResponse: AuthResponse = await this.authService.login(this.loginRequest);
     // Display dialog box if no token is received
     if(authResponse.responseToken.length === 0) {
@@ -63,7 +61,7 @@ export class LoginComponent implements OnInit {
       // Otherwise add a cookie with the app token
       this.cookieService.set(environment.tokenCookieName, authResponse.responseToken);
       let encodedToken = this.cookieService.get(environment.tokenCookieName);
-      this.router.navigateByUrl('instructoruserhome');
+      this.router.navigateByUrl(environment.profilePageUrl);
     }
     this.loadingState = false;
   }
@@ -81,6 +79,13 @@ export class LoginComponent implements OnInit {
       width: '25%',
       data: {message: message}
     });
+  }
+
+  redirectLoggedInUser() {
+    if(this.authGuard.canActivate()) {
+      let encodedToken = this.cookieService.get(environment.tokenCookieName);
+      this.router.navigateByUrl(environment.profilePageUrl);
+    }
   }
 
 }
