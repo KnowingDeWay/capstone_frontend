@@ -1,0 +1,55 @@
+mat-sidenav-container {
+  height: 100%;
+}
+
+mat-sidenav {
+  width: 20%;
+  height: 100%;
+}
+
+mat-sidenav-content {
+  height: 100%;
+  text-align: center;
+}
+
+.add-canvas-pat-content {
+  padding-top: 2%;
+  padding-right: 2%;
+}
+
+.add-pat {
+  text-align: center;
+  width: fit-content;
+  height: fit-content;
+}
+
+.pat-result {
+  width: fit-content;
+  height: fit-content;
+}
+
+.pat-results {
+  text-align: center;
+  align-items: center;
+  padding-top: 2%;
+}
+
+.list-divider {
+  padding-bottom: 2%;
+}
+
+.pat-options {
+  padding-top: 2%;
+}
+
+.button-spacing {
+  padding-right: 5%;
+}
+
+.active-token {
+  color: green;
+}
+
+.inactive-token {
+  color: red;
+}

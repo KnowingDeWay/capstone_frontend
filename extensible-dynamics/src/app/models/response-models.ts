@@ -3,7 +3,12 @@ export interface AuthResponse {
   responseToken: string
 }
 
-export interface ObjectResponse {
+export interface ObjectResponse<T> {
   message: string,
-  value: any
+  value: T | undefined
+}
+
+export interface ListResponse<T> {
+  responseMessage: string,
+  listContent: T[]
 }

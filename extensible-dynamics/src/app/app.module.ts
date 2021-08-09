@@ -15,21 +15,33 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
 
 import { LoginComponent } from './login/login.component';
 import { UserHomeComponent } from './user-home/user-home.component';
 import { GeneralAppNavbarComponent } from './general-app-navbar/general-app-navbar.component';
+import { GeneralAppSidenavComponent } from './general-app-sidenav/general-app-sidenav.component';
+import { CanvasPatComponent } from './canvas-pat/canvas-pat.component';
+import { AddPatDialog } from 'src/app/canvas-pat/canvas-pat.component';
 
 import { CookieService } from 'ngx-cookie-service';
 import { AuthenticationService } from '../services/authentication.service';
 import { RoutingService } from 'src/services/routing.service';
+import { UserService } from 'src/services/user-service.service';
+import { CanvasPatService } from 'src/services/canvas-pat.service';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     UserHomeComponent,
-      GeneralAppNavbarComponent
+    GeneralAppNavbarComponent,
+    GeneralAppSidenavComponent,
+    CanvasPatComponent,
+    AddPatDialog
    ],
   imports: [
     BrowserModule,
@@ -45,9 +57,12 @@ import { RoutingService } from 'src/services/routing.service';
     MatToolbarModule,
     MatDialogModule,
     MatProgressSpinnerModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatSidenavModule,
+    MatDividerModule,
+    MatListModule
   ],
-  providers: [CookieService, AuthenticationService, RoutingService],
+  providers: [CookieService, AuthenticationService, RoutingService, UserService, CanvasPatService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

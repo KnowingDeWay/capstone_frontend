@@ -1,0 +1,25 @@
+<mat-progress-bar mode="indeterminate" *ngIf="loadingState"></mat-progress-bar>
+<h1 mat-dialog-title>
+  Add New Canvas Token
+</h1>
+<form [formGroup]="addPatForm" fxLayoutAlign="stretch" fxLayout="column" (ngSubmit)="onConfirmClick()">
+  <mat-form-field>
+    <input matInput [formControl]="tokenNameControl" name="tkName" placeholder="Token Name:">
+    <mat-error *ngIf="tokenNameControl.invalid">
+      Token name <strong>cannot</strong> be empty
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [formControl]="apiKeyControl" name="apiKey" placeholder="Api Key:">
+    <mat-error *ngIf="apiKeyControl.invalid">
+      A Canvas API Key should be <strong>strictly</strong> 69 characters long
+    </mat-error>
+  </mat-form-field>
+  <div mat-dialog-actions fxLayoutAlign="center">
+    <button mat-raised-button
+    color="primary"
+    [disabled]="loadingState || tokenNameControl.invalid || apiKeyControl.invalid"
+    type="submit">Ok</button>
+    <button mat-raised-button color="primary" [disabled]="loadingState" (click)="onCancelClick()">Cancel</button>
+  </div>
+</form>

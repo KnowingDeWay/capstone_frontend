@@ -9,6 +9,8 @@ import { RouteInformation } from 'src/app/models/routing-models';
 import { Component, OnInit, Inject } from '@angular/core';
 import { UserType } from 'src/enums/app-enums';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Input } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
 
 export interface LogoutDialogData {
   message: string
@@ -21,18 +23,16 @@ export interface LogoutDialogData {
 })
 export class GeneralAppNavbarComponent implements OnInit {
 
-  private routeInfo: RouteInformation[] = [];
+  @Input() inputSideNav!: MatSidenav;
+
   private encodedToken: string = '';
-  private token: any = undefined;
-  private tokenService: JwtHelperService = new JwtHelperService();
+
   public isLoggingOut: boolean;
+  public opened: boolean = false;
 
   constructor(private routeService: RoutingService, private cookieService: CookieService,
     private authService: AuthenticationService, private router: Router, private logoutDialog: MatDialog) {
     this.encodedToken = cookieService.get(environment.tokenCookieName);
-    this.token = this.tokenService.decodeToken(this.encodedToken);
-    let userType = this.token.user_type as UserType;
-    this.routeInfo.concat(this.routeService.getGeneralRoutes(userType));
     this.isLoggingOut = false;
   }
 
@@ -41,9 +41,8 @@ export class GeneralAppNavbarComponent implements OnInit {
 
   public async logout() {
     this.isLoggingOut = true;
-    console.log(this.encodedToken);
     let response: AuthResponse = await this.authService.logout(this.encodedToken);
-    if(response.responseToken.length === 0) {
+    if(response.responseToken === null) {
       this.cookieService.delete(environment.tokenCookieName);
       this.router.navigateByUrl(environment.loginPageUrl);
     }

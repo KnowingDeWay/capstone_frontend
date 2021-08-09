@@ -13,6 +13,8 @@ export const environment = {
   tokenCookieName: 'app_token',
   loginPageUrl: '',
   profilePageUrl: 'profile',
+  canvasPatUrl: 'canvaspats',
+  canvasApiKeyLength: 69
 };
 
 export const routeInformation: RouteInformation[] = [
@@ -24,8 +26,14 @@ export const routeInformation: RouteInformation[] = [
   },
   {
     routeName: 'User Profile',
-    routeUrl: environment.loginPageUrl,
+    routeUrl: environment.profilePageUrl,
     iconName: 'account_circle',
+    routeGroup: RouteGroup.General
+  },
+  {
+    routeName: 'Canvas Access Tokens',
+    routeUrl: environment.canvasPatUrl,
+    iconName: 'vpn_key',
     routeGroup: RouteGroup.General
   }
 ];

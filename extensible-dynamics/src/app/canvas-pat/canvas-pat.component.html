@@ -1,0 +1,44 @@
+<app-general-app-navbar [inputSideNav]="sidenav"></app-general-app-navbar>
+<mat-sidenav-container autosize>
+  <mat-sidenav #sidenav mode="over">
+    <app-general-app-sidenav></app-general-app-sidenav>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="add-canvas-pat-content" fxLayoutAlign="top center" fxLayout="column" fxFlexFill>
+      <mat-card class="add-pat">
+        <button id="addPatBtn" mat-raised-button color="primary" (click)="openAddPatDialog()">Add New Canvas PAT</button>
+      </mat-card>
+      <span class="list-divider"></span>
+      <div class="pat-results" *ngFor="let pat of userPats">
+        <mat-card class="pat-result">
+          <span class="content-result">
+            <strong>Token Name: </strong> {{pat.tokenName}}<br />
+            <strong>Key: </strong> {{pat.accessToken}}<br />
+            <span class="active-token" *ngIf="pat.tokenActive">
+              <strong>Activation Status: Active</strong>
+            </span>
+            <span class="inactive-token" *ngIf="!pat.tokenActive">
+              <strong>Activation Status: Inactive</strong>
+            </span>
+          </span>
+          <br />
+          <div class="pat-options">
+            <button mat-raised-button color="primary"
+            [disabled]="activatingToken">Edit PAT</button>
+            <span class="button-spacing"></span>
+            <button mat-raised-button color="accent"
+            [disabled]="activatingToken" (click)="activateToken(pat.id)">
+              <div class="spinner-ctr" *ngIf="activatingToken">
+                <mat-spinner diameter="25"></mat-spinner>
+              </div>
+              Activate PAT
+            </button>
+            <span class="button-spacing"></span>
+            <button mat-raised-button color="warn"
+            [disabled]="activatingToken">Delete PAT</button>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

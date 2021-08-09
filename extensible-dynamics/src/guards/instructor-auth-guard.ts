@@ -35,6 +35,7 @@ export class InstructorAuthGuard implements CanActivate {
       // Check if token is valid on the back end
       let tokenValid: number = await this.authService.validateToken(encodedToken);
       if(tokenValid === -1) {
+        this.router.navigateByUrl(environment.loginPageUrl);
         return false;
       }
       if(tokenValid === 0) {

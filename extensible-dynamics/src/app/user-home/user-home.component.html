@@ -1,2 +1,16 @@
-<app-general-app-navbar></app-general-app-navbar>
-<p>user-home works!</p>
+<app-general-app-navbar [inputSideNav]="sidenav"></app-general-app-navbar>
+<mat-sidenav-container autosize>
+  <mat-sidenav #sidenav mode="over">
+    <app-general-app-sidenav></app-general-app-sidenav>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="profile-content" fxLayoutAlign="center center" fxFlexFill>
+      <mat-card fxFlex="25">
+        <div class="user-info" *ngIf="profile !== undefined">
+          <h1>Welcome, {{profile.appUserName}}</h1>
+          <h2>Role: {{getEnumName(profile.userType)}}</h2>
+        </div>
+      </mat-card>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

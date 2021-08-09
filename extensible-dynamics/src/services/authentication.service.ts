@@ -19,9 +19,16 @@ export class AuthenticationService {
         responseModel = response.data as AuthResponse;
       },
       (error) => {
-        responseModel = {
-          responseMessage: error.message,
-          responseToken: ''
+        if(error.response !== undefined) {
+          if(error.response.data !== null) {
+            responseModel = error.response.data as AuthResponse;
+          }
+        }
+        else {
+          responseModel = {
+            responseMessage: error.message,
+            responseToken: ''
+          }
         }
       }
     );
@@ -35,14 +42,21 @@ export class AuthenticationService {
         Authorization: 'Bearer ' + encodedToken
       }
     };
-    await axios.post(`${environment.baseUrl}/api/TokenAuthController/LogoutUser`, undefined, requestHeaders).then(
+    await axios.post(`${environment.baseUrl}/api/TokenAuthController/LogoutUser`, {}, requestHeaders).then(
       (response) => {
         responseModel = response.data as AuthResponse;
       },
       (error) => {
-        responseModel = {
-          responseMessage: error.message,
-          responseToken: 'error'
+        if(error.response !== undefined) {
+          if(error.response.data !== null) {
+            responseModel = error.response.data as AuthResponse;
+          }
+        }
+        else {
+          responseModel = {
+            responseMessage: error.message,
+            responseToken: ''
+          }
         }
       }
     );

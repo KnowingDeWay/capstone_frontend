@@ -54,7 +54,10 @@ export class LoginComponent implements OnInit {
     this.redirectLoggedInUser; // If the user is logged in already, don't log him in again
     let authResponse: AuthResponse = await this.authService.login(this.loginRequest);
     // Display dialog box if no token is received
-    if(authResponse.responseToken.length === 0) {
+    if(authResponse.responseToken === null) {
+      this.openDialog(authResponse.responseMessage);
+    }
+    else if(authResponse.responseToken.length === 0) {
       this.openDialog(authResponse.responseMessage);
     }
     else {

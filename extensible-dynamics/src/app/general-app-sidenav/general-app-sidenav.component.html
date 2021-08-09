@@ -1,0 +1,11 @@
+<div class="sidenav-content">
+  <mat-nav-list>
+    <a *ngFor="let route of routeInfo"
+    mat-list-item
+    [routerLink]= "['../', route.routeUrl]"
+    routerLinkActive= "list-item-active">
+      <mat-icon matListIcon> {{ route.iconName }} </mat-icon>
+      {{route.routeName}}
+    </a>
+  </mat-nav-list>
+</div>
