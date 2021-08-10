@@ -1,0 +1,15 @@
+<mat-progress-bar mode="indeterminate" *ngIf="loadingState"></mat-progress-bar>
+<h1 mat-dialog-title>
+  Delete Canvas Token
+</h1>
+<div class="prompt" text-align="center">
+  <p>Are you sure you want to delete this token?</p>
+</div>
+<div mat-dialog-actions fxLayoutAlign="center">
+  <button mat-raised-button color="warn" (click)="onConfirmClick()">
+    Yes
+  </button>
+  <button mat-raised-button color="primary" (click)="onCancelClick()">
+    No
+  </button>
+</div>

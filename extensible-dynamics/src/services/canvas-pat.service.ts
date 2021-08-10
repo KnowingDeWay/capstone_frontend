@@ -30,6 +30,12 @@ export class CanvasPatService {
           if(error.response.data !== null) {
             listRes = error.response.data as ListResponse<CanvasPersonalAccessToken>;
           }
+          else {
+            listRes = {
+              responseMessage: error.message,
+              listContent: []
+            }
+          }
         }
         else {
           listRes = {
@@ -58,10 +64,18 @@ export class CanvasPatService {
           if(error.response.data !== null) {
             objRes = error.response.data as ObjectResponse<CanvasPersonalAccessToken>;
           }
+          else {
+            objRes = {
+              message: error.message,
+              value: undefined
+            }
+          }
         }
-        objRes = {
-          message: error.message,
-          value: undefined
+        else {
+          objRes = {
+            message: error.message,
+            value: undefined
+          }
         }
       }
     );
@@ -84,8 +98,13 @@ export class CanvasPatService {
           if(error.response.data !== undefined) {
             res = error.response.data;
           }
+          else {
+            res = error.message;
+          }
         }
-        res = error.message;
+        else {
+          res = error.message;
+        }
       }
     );
     return res;
@@ -107,8 +126,13 @@ export class CanvasPatService {
           if(error.response.data !== undefined) {
             res = error.response.data;
           }
+          else {
+            res = error.message;
+          }
         }
-        res = error.message;
+        else {
+          res = error.message;
+        }
       }
     );
     return res;
@@ -130,8 +154,13 @@ export class CanvasPatService {
           if(error.response.data !== undefined) {
             res = error.response.data;
           }
+          else {
+            res = error.message;
+          }
         }
-        res = error.message;
+        else {
+          res = error.message;
+        }
       }
     );
     return res;
@@ -153,8 +182,13 @@ export class CanvasPatService {
           if(error.response.data !== undefined) {
             res = error.response.data;
           }
+          else {
+            res = error.message;
+          }
         }
-        res = error.message;
+        else {
+          res = error.message;
+        }
       }
     );
     return res;

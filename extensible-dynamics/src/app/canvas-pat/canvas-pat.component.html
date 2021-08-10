@@ -9,6 +9,9 @@
         <button id="addPatBtn" mat-raised-button color="primary" (click)="openAddPatDialog()">Add New Canvas PAT</button>
       </mat-card>
       <span class="list-divider"></span>
+      <div class="pat-results-spinner" *ngIf="loadingResults">
+        <mat-spinner diameter="70"></mat-spinner>
+      </div>
       <div class="pat-results" *ngFor="let pat of userPats">
         <mat-card class="pat-result">
           <span class="content-result">
@@ -24,7 +27,7 @@
           <br />
           <div class="pat-options">
             <button mat-raised-button color="primary"
-            [disabled]="activatingToken">Edit PAT</button>
+            [disabled]="activatingToken" (click)="openEditPatDialog(pat)">Edit PAT</button>
             <span class="button-spacing"></span>
             <button mat-raised-button color="accent"
             [disabled]="activatingToken" (click)="activateToken(pat.id)">
@@ -35,7 +38,7 @@
             </button>
             <span class="button-spacing"></span>
             <button mat-raised-button color="warn"
-            [disabled]="activatingToken">Delete PAT</button>
+            [disabled]="activatingToken" (click)="openDeletePatDialog(pat.id)">Delete PAT</button>
           </div>
         </mat-card>
       </div>

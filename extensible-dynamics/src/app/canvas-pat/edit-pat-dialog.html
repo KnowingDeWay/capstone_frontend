@@ -1,8 +1,8 @@
 <mat-progress-bar mode="indeterminate" *ngIf="loadingState"></mat-progress-bar>
 <h1 mat-dialog-title>
-  Add New Canvas Token
+  Edit Canvas Token
 </h1>
-<form [formGroup]="addPatForm" fxLayoutAlign="stretch" fxLayout="column" (ngSubmit)="onConfirmClick()">
+<form [formGroup]="editPatForm" fxLayoutAlign="stretch" fxLayout="column" (ngSubmit)="onConfirmClick()">
   <mat-form-field>
     <input matInput [formControl]="tokenNameControl" name="tkName" placeholder="Token Name:">
     <mat-error *ngIf="tokenNameControl.invalid">

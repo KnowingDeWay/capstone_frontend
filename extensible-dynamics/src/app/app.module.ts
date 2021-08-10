@@ -25,6 +25,8 @@ import { GeneralAppNavbarComponent } from './general-app-navbar/general-app-navb
 import { GeneralAppSidenavComponent } from './general-app-sidenav/general-app-sidenav.component';
 import { CanvasPatComponent } from './canvas-pat/canvas-pat.component';
 import { AddPatDialog } from 'src/app/canvas-pat/canvas-pat.component';
+import { EditPatDialog } from 'src/app/canvas-pat/canvas-pat.component';
+import { DeletePatDialog } from 'src/app/canvas-pat/canvas-pat.component';
 
 import { CookieService } from 'ngx-cookie-service';
 import { AuthenticationService } from '../services/authentication.service';
@@ -41,7 +43,9 @@ import { CanvasPatService } from 'src/services/canvas-pat.service';
     GeneralAppNavbarComponent,
     GeneralAppSidenavComponent,
     CanvasPatComponent,
-    AddPatDialog
+    AddPatDialog,
+    EditPatDialog,
+    DeletePatDialog
    ],
   imports: [
     BrowserModule,
