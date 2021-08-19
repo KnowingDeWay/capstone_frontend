@@ -19,6 +19,13 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 
+import { CookieService } from 'ngx-cookie-service';
+import { AuthenticationService } from '../services/authentication.service';
+import { RoutingService } from 'src/services/routing.service';
+import { UserService } from 'src/services/user-service.service';
+import { CanvasPatService } from 'src/services/canvas-pat.service';
+import { CanvasCoursesService } from 'src/services/canvas-courses.service';
+
 import { LoginComponent } from './login/login.component';
 import { UserHomeComponent } from './user-home/user-home.component';
 import { GeneralAppNavbarComponent } from './general-app-navbar/general-app-navbar.component';
@@ -27,12 +34,7 @@ import { CanvasPatComponent } from './canvas-pat/canvas-pat.component';
 import { AddPatDialog } from 'src/app/canvas-pat/canvas-pat.component';
 import { EditPatDialog } from 'src/app/canvas-pat/canvas-pat.component';
 import { DeletePatDialog } from 'src/app/canvas-pat/canvas-pat.component';
-
-import { CookieService } from 'ngx-cookie-service';
-import { AuthenticationService } from '../services/authentication.service';
-import { RoutingService } from 'src/services/routing.service';
-import { UserService } from 'src/services/user-service.service';
-import { CanvasPatService } from 'src/services/canvas-pat.service';
+import { CoursesComponent } from './courses/courses.component';
 
 
 @NgModule({
@@ -45,7 +47,8 @@ import { CanvasPatService } from 'src/services/canvas-pat.service';
     CanvasPatComponent,
     AddPatDialog,
     EditPatDialog,
-    DeletePatDialog
+    DeletePatDialog,
+    CoursesComponent
    ],
   imports: [
     BrowserModule,
@@ -66,7 +69,7 @@ import { CanvasPatService } from 'src/services/canvas-pat.service';
     MatDividerModule,
     MatListModule
   ],
-  providers: [CookieService, AuthenticationService, RoutingService, UserService, CanvasPatService],
+  providers: [CookieService, AuthenticationService, RoutingService, UserService, CanvasPatService, CanvasCoursesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

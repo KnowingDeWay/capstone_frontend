@@ -1,0 +1,26 @@
+<app-general-app-navbar [inputSideNav]="sidenav"></app-general-app-navbar>
+<mat-sidenav-container autosize>
+  <mat-sidenav #sidenav mode="over">
+    <app-general-app-sidenav></app-general-app-sidenav>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="course-list" fxLayoutAlign="top center" fxLayout="column" fxFlexFill>
+      <div class="pat-results-spinner" *ngIf="loadingResults">
+        <mat-spinner diameter="70"></mat-spinner>
+      </div>
+      <div class="course" *ngFor="let course of courses">
+        <mat-card class="result">
+          <h1>{{course.name}}</h1>
+          <h2>{{course.course_code}}</h2>
+          <span>
+            {{course.public_description}}
+          </span>
+          <span class="public-course" *ngIf="course.is_public">Course is Public</span>
+          <span class="private-course" *ngIf="!course.is_public">Course is not public</span>
+          <div class="option-area">
+            <button mat-raised-button color="primary">View Course</button>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </mat-sidenav-content>

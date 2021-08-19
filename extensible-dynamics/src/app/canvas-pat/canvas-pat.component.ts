@@ -105,6 +105,16 @@ export class CanvasPatComponent implements OnInit {
     });
   }
 
+  openFeedbackDialog(response: string) {
+    const dialogRef = this.feedbackDialog.open(PatFeedbackDialog, {
+      width: '25%',
+      data: {
+        message: response,
+        title: 'Canvas PATs'
+      }
+    });
+  }
+
 }
 
 @Component({

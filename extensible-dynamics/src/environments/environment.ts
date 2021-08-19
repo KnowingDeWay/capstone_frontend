@@ -14,6 +14,7 @@ export const environment = {
   loginPageUrl: '',
   profilePageUrl: 'profile',
   canvasPatUrl: 'canvaspats',
+  canvasCoursesUrl: 'canvas_courses',
   canvasApiKeyLength: 69
 };
 
@@ -34,6 +35,12 @@ export const routeInformation: RouteInformation[] = [
     routeName: 'Canvas Access Tokens',
     routeUrl: environment.canvasPatUrl,
     iconName: 'vpn_key',
+    routeGroup: RouteGroup.General
+  },
+  {
+    routeName: 'Courses',
+    routeUrl: environment.canvasCoursesUrl,
+    iconName: 'library_books',
     routeGroup: RouteGroup.General
   }
 ];

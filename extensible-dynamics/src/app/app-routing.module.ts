@@ -1,3 +1,4 @@
+import { CoursesComponent } from './courses/courses.component';
 import { CanvasPatComponent } from './canvas-pat/canvas-pat.component';
 import { environment } from 'src/environments/environment';
 import { AuthGuard } from './../guards/auth-guard';
@@ -10,7 +11,8 @@ import { LoginComponent } from './login/login.component';
 const routes: Routes = [
   { path: environment.loginPageUrl, component: LoginComponent },
   { path: environment.profilePageUrl, component: UserHomeComponent, canActivate: [AuthGuard] },
-  { path: environment.canvasPatUrl, component: CanvasPatComponent, canActivate: [AuthGuard] }
+  { path: environment.canvasPatUrl, component: CanvasPatComponent, canActivate: [AuthGuard] },
+  { path: environment.canvasCoursesUrl, component: CoursesComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({
