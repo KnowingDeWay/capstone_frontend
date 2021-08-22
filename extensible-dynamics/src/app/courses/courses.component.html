@@ -18,7 +18,10 @@
           <span class="public-course" *ngIf="course.is_public">Course is Public</span>
           <span class="private-course" *ngIf="!course.is_public">Course is not public</span>
           <div class="option-area">
-            <button mat-raised-button color="primary">View Course</button>
+            <button mat-raised-button color="primary"
+            [routerLink]="['../', env.courseOverviewUrl]" [state]="{data: course}">
+              View Course
+            </button>
           </div>
         </mat-card>
       </div>

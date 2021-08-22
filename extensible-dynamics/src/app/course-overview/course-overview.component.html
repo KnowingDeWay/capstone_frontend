@@ -1,0 +1,19 @@
+<app-general-app-navbar [inputSideNav]="sidenav" [title]="title"></app-general-app-navbar>
+<mat-sidenav-container autosize>
+  <mat-sidenav #sidenav mode="over">
+    <app-general-app-sidenav [routeGroup]="2"></app-general-app-sidenav>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="course-content" fxLayoutAlign="top center" fxLayout="column" fxFlexFill>
+      <mat-card>
+        <h1>{{course.name}}</h1>
+        <h2>Created At: {{formatDate(course.created_at)}}</h2>
+        <p class="course-desc">
+          <strong>Public Description: </strong>
+          {{course.public_description}}
+        </p>
+        <span class="public-course" *ngIf="course.is_public">Course is Public</span>
+        <span class="private-course" *ngIf="!course.is_public">Course is not public</span>
+      </mat-card>
+    </div>
+  </mat-sidenav-content>

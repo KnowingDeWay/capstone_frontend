@@ -5,3 +5,19 @@
 .title-spacing {
   width: 40%;
 }
+
+.navbar-content {
+  width: fit-content;
+}
+
+.navbar-title {
+  text-align: center;
+}
+
+mat-toolbar {
+  width: 100%;
+}
+
+.login-btn {
+  align-self: flex-end;
+}

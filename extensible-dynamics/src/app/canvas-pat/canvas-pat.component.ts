@@ -1,9 +1,9 @@
-import { Observable } from 'rxjs';
+import { Observable, Subscriber, Subscription } from 'rxjs';
 import { environment } from './../../environments/environment';
 import { CanvasPatService } from './../../services/canvas-pat.service';
 import { ListResponse } from './../models/response-models';
 import { CanvasPersonalAccessToken } from './../models/entity-models';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { CanvasToken } from '../models/request-models';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -33,7 +33,7 @@ export interface DeletePatDialogData {
   templateUrl: './canvas-pat.component.html',
   styleUrls: ['./canvas-pat.component.css']
 })
-export class CanvasPatComponent implements OnInit {
+export class CanvasPatComponent implements OnInit, OnDestroy {
 
   public userPats: CanvasPersonalAccessToken[] = [];
   private listRes!: ListResponse<CanvasPersonalAccessToken>;
@@ -41,23 +41,35 @@ export class CanvasPatComponent implements OnInit {
   private patObservable!: Observable<CanvasPersonalAccessToken[]>;
   public activatingToken: boolean = false;
   public loadingResults: boolean = true;
+  private subscription!: Subscription;
+  private clearInterval: boolean = false;
 
   constructor(private cookieService: CookieService, private patService: CanvasPatService, private addPatDialog: MatDialog,
     private feedbackDialog: MatDialog, private editPatDialog: MatDialog, private deletePatDialog: MatDialog) {
     this.encodedToken = this.cookieService.get(environment.tokenCookieName);
     this.patObservable = new Observable<CanvasPersonalAccessToken[]>(
       observer => {
-        setInterval(async () => {
-          this.listRes = await this.patService.getUserPats(this.encodedToken);
-          this.userPats = this.listRes.listContent;
-          this.loadingResults = false;
-        }, 1000);
+        let handle = setInterval(
+          async () => {
+            this.listRes = await this.patService.getUserPats(this.encodedToken);
+            this.userPats = this.listRes.listContent;
+            this.loadingResults = false;
+            if(this.clearInterval) {
+              clearInterval(handle);
+            }
+          }
+        , 1000);
       }
     );
+    this.subscription = this.patObservable.subscribe();
+  }
+  ngOnDestroy() {
+    this.clearInterval = true;
+    this.subscription.unsubscribe();
   }
 
-  async ngOnInit(): Promise<void> {
-    this.patObservable.subscribe();
+  ngOnInit() {
+
   }
 
   public openAddPatDialog() {

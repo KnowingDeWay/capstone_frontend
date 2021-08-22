@@ -8,4 +8,13 @@
       {{route.routeName}}
     </a>
   </mat-nav-list>
+  <mat-nav-list *ngIf="routeGroup !== 1">
+    <a
+    mat-list-item
+    [routerLink]= "['../', exitUrl]"
+    routerLinkActive= "list-item-active">
+      <mat-icon matListIcon>exit_to_app</mat-icon>
+      {{exitPageName}}
+    </a>
+  </mat-nav-list>
 </div>

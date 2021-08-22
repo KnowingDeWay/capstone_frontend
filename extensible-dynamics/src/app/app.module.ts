@@ -35,6 +35,7 @@ import { AddPatDialog } from 'src/app/canvas-pat/canvas-pat.component';
 import { EditPatDialog } from 'src/app/canvas-pat/canvas-pat.component';
 import { DeletePatDialog } from 'src/app/canvas-pat/canvas-pat.component';
 import { CoursesComponent } from './courses/courses.component';
+import { CourseOverviewComponent } from './course-overview/course-overview.component';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { CoursesComponent } from './courses/courses.component';
     AddPatDialog,
     EditPatDialog,
     DeletePatDialog,
-    CoursesComponent
+    CoursesComponent,
+    CourseOverviewComponent,
    ],
   imports: [
     BrowserModule,

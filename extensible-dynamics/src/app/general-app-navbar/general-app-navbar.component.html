@@ -1,11 +1,11 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" fxLayoutAlign="top top" fxLayout="row">
   <mat-toolbar-row>
     <button mat-icon-button (click)="inputSideNav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
-    <span class="title-spacing"></span>
-    <span>Extensible Dynamics</span>
-    <span class="navbar-spacing"></span>
+    <span class="navbar-title" fxFlex="92">
+      {{title}}
+    </span>
     <button mat-icon-button class="logout-btn" (click)="logout()">
       <mat-icon>logout</mat-icon>
       <span>Log Out</span>

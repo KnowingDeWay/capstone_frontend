@@ -1,0 +1,24 @@
+.course-content {
+  padding-top: 2%;
+}
+
+.public-course {
+  color: green;
+}
+
+.private-course {
+  color: red;
+}
+
+mat-sidenav-content {
+  height: 100%;
+}
+
+mat-sidenav-container {
+  height: 100%;
+}
+
+mat-sidenav {
+  width: 20%;
+  height: 100%;
+}

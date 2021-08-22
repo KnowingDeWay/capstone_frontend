@@ -4,5 +4,5 @@ export enum UserType {
 
 // General means screens within the main app before going to a specific Canvas course later
 export enum RouteGroup {
-  Auth, General
+  Auth, General, Course
 }

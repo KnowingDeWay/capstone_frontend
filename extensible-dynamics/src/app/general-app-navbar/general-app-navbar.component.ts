@@ -24,6 +24,7 @@ export interface LogoutDialogData {
 export class GeneralAppNavbarComponent implements OnInit {
 
   @Input() inputSideNav!: MatSidenav;
+  @Input() title: string = 'Extensible Dynamics';
 
   private encodedToken: string = '';
 

@@ -15,6 +15,7 @@ export const environment = {
   profilePageUrl: 'profile',
   canvasPatUrl: 'canvaspats',
   canvasCoursesUrl: 'canvas_courses',
+  courseOverviewUrl: 'course_overview',
   canvasApiKeyLength: 69
 };
 
@@ -42,6 +43,12 @@ export const routeInformation: RouteInformation[] = [
     routeUrl: environment.canvasCoursesUrl,
     iconName: 'library_books',
     routeGroup: RouteGroup.General
+  },
+  {
+    routeName: 'Overview',
+    routeUrl: environment.courseOverviewUrl,
+    iconName: 'dashboard',
+    routeGroup: RouteGroup.Course
   }
 ];
 

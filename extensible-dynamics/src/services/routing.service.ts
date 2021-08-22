@@ -13,7 +13,7 @@ export class RoutingService {
 
 constructor(private router: Router) { }
 
-  public getGeneralRoutes(userType: UserType): RouteInformation[] {
+  public getGeneralRoutes(userType: UserType, routeGroup: RouteGroup): RouteInformation[] {
     let authGuards: any[] = [undefined, undefined, InstructorAuthGuard, undefined];
     let routeInfo: RouteInformation[] = [];
     this.router.config.forEach(
@@ -23,7 +23,7 @@ constructor(private router: Router) { }
             if(x.path !== undefined) {
               routeInformation.forEach(
                 y => {
-                  if(x.path === y.routeUrl && y.routeGroup === RouteGroup.General) {
+                  if(x.path === y.routeUrl && y.routeGroup === routeGroup) {
                     routeInfo.push(y);
                   }
                 }
