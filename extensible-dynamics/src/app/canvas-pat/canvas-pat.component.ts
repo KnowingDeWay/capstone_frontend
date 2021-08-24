@@ -42,21 +42,18 @@ export class CanvasPatComponent implements OnInit, OnDestroy {
   public activatingToken: boolean = false;
   public loadingResults: boolean = true;
   private subscription!: Subscription;
-  private clearInterval: boolean = false;
+  private intervalHandle!: any;
 
   constructor(private cookieService: CookieService, private patService: CanvasPatService, private addPatDialog: MatDialog,
     private feedbackDialog: MatDialog, private editPatDialog: MatDialog, private deletePatDialog: MatDialog) {
     this.encodedToken = this.cookieService.get(environment.tokenCookieName);
     this.patObservable = new Observable<CanvasPersonalAccessToken[]>(
       observer => {
-        let handle = setInterval(
+        this.intervalHandle = setInterval(
           async () => {
             this.listRes = await this.patService.getUserPats(this.encodedToken);
             this.userPats = this.listRes.listContent;
             this.loadingResults = false;
-            if(this.clearInterval) {
-              clearInterval(handle);
-            }
           }
         , 1000);
       }
@@ -64,7 +61,7 @@ export class CanvasPatComponent implements OnInit, OnDestroy {
     this.subscription = this.patObservable.subscribe();
   }
   ngOnDestroy() {
-    this.clearInterval = true;
+    clearInterval(this.intervalHandle);
     this.subscription.unsubscribe();
   }
 

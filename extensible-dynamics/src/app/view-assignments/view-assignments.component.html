@@ -1,0 +1,33 @@
+<app-general-app-navbar [inputSideNav]="sidenav" [title]="title"></app-general-app-navbar>
+<mat-sidenav-container autosize>
+  <mat-sidenav #sidenav mode="over">
+    <app-general-app-sidenav #appnav [routeGroup]="2" [stateData]="course"></app-general-app-sidenav>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="assignment-list" fxLayoutAlign="top center" fxLayout="column" fxFlexFill>
+      <div class="assignment-results-spinner" *ngIf="loadingResults">
+        <mat-spinner diameter="70"></mat-spinner>
+      </div>
+      <div class="assignments" *ngFor="let assignment of assignments">
+        <mat-card class="result">
+          <h1>{{assignment.name}}</h1>
+          <h2>Created At: {{formatDate(assignment.created_at)}}</h2>
+          <h2>Updated At: {{formatDate(assignment.updated_at)}}</h2>
+          <h2 class="positive" *ngIf="!isOverdue(assignment.due_at)">Due Date {{formatDate(assignment.due_at)}}</h2>
+          <h2 class="negative" *ngIf="isOverdue(assignment.due_at)">Due Date: {{formatDate(assignment.due_at)}}</h2>
+          <p class="ass-desc">
+            <strong>Description: </strong> {{assignment.description}}
+          </p>
+          <p>
+            <strong>Locked Until: </strong> {{assignment.unlock_at}}
+          </p>
+          <p>
+            <strong>Points Possible: </strong> {{assignment.points_possible}}
+          </p>
+          <h2 class="positive" *ngIf="assignment.published">This assignment is published</h2>
+          <h2 class="negative" *ngIf="!assignment.published">This assignment is <strong>not</strong> published</h2>
+          <button mat-raised-button color="primary" (click)="openEditWindow(assignment.id)">Edit Assignment</button>
+        </mat-card>
+      </div>
+    </div>
+  </mat-sidenav-content>

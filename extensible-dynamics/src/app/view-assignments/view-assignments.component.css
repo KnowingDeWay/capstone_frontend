@@ -1,0 +1,32 @@
+mat-sidenav-content {
+  height: 100%;
+  text-align: center;
+}
+
+mat-sidenav-container {
+  height: 100%;
+}
+
+mat-sidenav {
+  width: 20%;
+  height: 100%;
+}
+
+.positive {
+  color: green;
+}
+
+.negative {
+  color: red;
+}
+
+.assignment-list{
+  padding-top: 2%;
+}
+
+.assignments {
+  padding-top: 2%;
+  padding-right: 2%;
+}
+
+

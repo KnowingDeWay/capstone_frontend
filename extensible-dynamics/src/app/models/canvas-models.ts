@@ -1,6 +1,7 @@
 export interface Permissions {
   create_discussion_topic: boolean;
   create_announcement: boolean;
+  attach: boolean;
 }
 
 export interface BlueprintRestrictions {
@@ -177,4 +178,298 @@ export interface Course {
   blueprint_restrictions: BlueprintRestrictions;
   blueprint_restrictions_by_object_type: BlueprintRestrictionsByObjectType;
   template: boolean;
+}
+
+export interface NeedsGradingCount {
+  section_id: string;
+  needs_grading_count: number;
+}
+
+export interface TurnitinSettings {
+  originality_report_visibility: string;
+  s_paper_check: boolean;
+  internet_check: boolean;
+  journal_check: boolean;
+  exclude_biblio: boolean;
+  exclude_quoted: boolean;
+  exclude_small_matches_type: string;
+  exclude_small_matches_value: number;
+}
+
+export interface ExternalToolTagAttributes {
+  url: string;
+  new_tab: boolean;
+  resource_link_id: string;
+}
+
+export interface LockInfo {
+  asset_string: string;
+  unlock_at?: Date;
+  lock_at?: Date;
+  context_module: string;
+  manually_locked: boolean;
+}
+
+export interface GroupTopicChildren {
+  id: number;
+  group_id: number;
+}
+
+export interface FileAttachment {
+  content_type: string;
+  url: string;
+  filename: string;
+  display_name: string;
+}
+
+export interface DiscussionTopic {
+  id: number;
+  title: string;
+  message: string;
+  html_url: string;
+  posted_at: Date;
+  last_reply_at?: Date;
+  require_initial_post: boolean;
+  user_can_see_posts: boolean;
+  discussion_subentry_count: number;
+  read_state: string;
+  unread_count: number;
+  subscribed: boolean;
+  subscription_hold: string;
+  assignment_id?: number;
+  delayed_post_at?: Date;
+  published: boolean;
+  lock_at?: Date;
+  locked: boolean;
+  pinned: boolean;
+  locked_for_user: boolean;
+  lock_info: LockInfo;
+  lock_explanation: string;
+  user_name: string;
+  topic_children: number[];
+  group_topic_children: GroupTopicChildren[];
+  root_topic_id?: number;
+  podcast_url: string;
+  discussion_type: string;
+  group_category_id?: number;
+  attachments: FileAttachment[];
+  permissions: Permissions;
+  allow_rating: boolean;
+  only_graders_can_rate: boolean;
+  sort_by_rating: boolean;
+}
+
+export interface MediaComment {
+  content_type: string;
+  display_name: string;
+  media_id: string;
+  media_type: string;
+  url: string;
+}
+
+export interface SubmissionComment {
+  id: number;
+  author_id: number;
+  author_name: string;
+  author: string;
+  comment: string;
+  created_at: Date;
+  edited_at: Date;
+  media_comment: MediaComment;
+}
+
+export interface Submission {
+  assignment_id: number;
+  assignment: Assignment;
+  course: Course;
+  attempt: number;
+  body: string;
+  grade: string;
+  grade_matches_current_submission: boolean;
+  html_url: string;
+  preview_url: string;
+  score: number;
+  submission_comments: SubmissionComment[];
+  submission_type: string;
+  submitted_at: Date;
+  url?: string;
+  user_id: number;
+  grader_id: number;
+  graded_at: Date;
+  user: User;
+  late: boolean;
+  assignment_visible: boolean;
+  excused: boolean;
+  missing: boolean;
+  late_policy_status: string;
+  points_deducted: number;
+  seconds_late: number;
+  workflow_state: string;
+  extra_attempts: number;
+  anonymous_id: string;
+  posted_at: Date;
+  read_status: string;
+}
+
+export interface RubricRating {
+  id: string;
+  criterion_id: string;
+  description: string;
+  long_description: string;
+  points: number;
+}
+
+
+export interface RubricCriterion {
+  id: string;
+  description: string;
+  long_description: string;
+  points: number;
+  criterion_use_range: boolean;
+  ratings: RubricRating[];
+}
+
+export interface RubricAssessment {
+  id: number;
+  rubric_id: number;
+  rubric_association_id: number;
+  score: number;
+  artifact_type: string;
+  artifact_id: number;
+  artifact_attempt: number;
+  assessment_type: string;
+  assessor_id: number;
+  data: any;
+  comments: any;
+}
+
+export interface RubricAssociation {
+  id: number;
+  rubric_id: number;
+  association_id: number;
+  association_type: string;
+  use_for_grading: boolean;
+  summary_data: string;
+  purpose: string;
+  hide_score_total: boolean;
+  hide_points: boolean;
+  hide_outcome_results: boolean;
+}
+
+
+
+export interface Rubric {
+  id: number;
+  title: string;
+  context_id: number;
+  context_type: string;
+  points_possible: number;
+  reusable: boolean;
+  read_only: boolean;
+  free_form_criterion_comments: boolean;
+  hide_score_total: boolean;
+  data: RubricCriterion[];
+  assessments: RubricAssessment[];
+  associations: RubricAssociation[];
+}
+
+export interface AssignmentOverride {
+  id: number;
+  assignment_id: number;
+  student_ids: number[];
+  group_id: number;
+  course_section_id: number;
+  title: string;
+  due_at?: Date;
+  all_day: boolean;
+  all_day_date: string;
+  unlock_at?: Date;
+  lock_at?: Date;
+}
+
+export interface ScoreStatistic {
+  min: number;
+  mean: number;
+  max: number;
+}
+
+export interface RubricSettings {
+  id: number;
+  title: string;
+  points_possible: number;
+  free_form_criterion_comments: boolean;
+  hide_score_total: boolean;
+  hide_points: boolean;
+}
+
+export interface Assignment {
+  id: number;
+  name: string;
+  description: string;
+  created_at: Date;
+  updated_at?: Date;
+  due_at?: Date;
+  lock_at?: Date;
+  unlock_at?: Date;
+  has_overrides: boolean;
+  all_dates: Date[];
+  course_id: number;
+  html_url: string;
+  submissions_download_url: string;
+  assignment_group_id: number;
+  due_date_required: boolean;
+  allowed_extensions: string[];
+  max_name_length: number;
+  turnitin_enabled: boolean;
+  vericite_enabled: boolean;
+  turnitin_settings: TurnitinSettings;
+  grade_group_students_individually: boolean;
+  external_tool_tag_attributes: ExternalToolTagAttributes;
+  peer_reviews: boolean;
+  automatic_peer_reviews: boolean;
+  peer_review_count: number;
+  peer_reviews_assign_at?: Date;
+  intra_group_peer_reviews: boolean;
+  group_category_id: number;
+  needs_grading_count: number;
+  needs_grading_count_by_section: NeedsGradingCount[];
+  position: number;
+  post_to_sis: boolean;
+  integration_id: string;
+  integration_data: Map<string, string>;
+  points_possible: number;
+  submission_types: string[];
+  has_submitted_submissions: boolean;
+  grading_type: string;
+  grading_standard_id?: number;
+  published: boolean;
+  unpublishable: boolean;
+  only_visible_to_overrides: boolean;
+  locked_for_user: boolean;
+  lock_info: LockInfo;
+  lock_explanation: string;
+  quiz_id: number;
+  anonymous_submissions: boolean;
+  discussion_topic: DiscussionTopic;
+  freeze_on_copy: boolean;
+  frozen: boolean;
+  frozen_attributes: string[];
+  submission: Submission;
+  use_rubric_for_grading: boolean;
+  rubric_settings: RubricSettings;
+  rubric: RubricCriterion[];
+  assignment_visibility: number[];
+  overrides: AssignmentOverride[];
+  omit_from_final_grade: boolean;
+  moderated_grading: boolean;
+  grader_count: number;
+  final_grader_id?: number;
+  grader_comments_visible_to_graders: boolean;
+  graders_anonymous_to_graders: boolean;
+  grader_names_visible_to_final_grader: boolean;
+  anonymous_grading: boolean;
+  allowed_attempts: number;
+  post_manually: boolean;
+  score_statistics: ScoreStatistic;
+  can_submit: boolean;
 }

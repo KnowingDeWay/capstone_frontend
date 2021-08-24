@@ -16,34 +16,31 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
   public loadingResults: boolean = true;
   private encodedToken: string = '';
-  private patObservable!: Observable<Course[]>;
+  private courseObservable!: Observable<Course[]>;
   private listRes!: ListResponse<Course>;
   public courses: Course[] = [];
   public env: any = environment;
   private subscription!: Subscription;
-  private clearInterval: boolean = false;
+  private intervalHandle!: any;
 
   constructor(private cookieService: CookieService, private courseService: CanvasCoursesService) {
     this.encodedToken = this.cookieService.get(environment.tokenCookieName);
-    this.patObservable = new Observable<Course[]>(
+    this.courseObservable = new Observable<Course[]>(
       observer => {
-        let handle = setInterval(
+        this.intervalHandle = setInterval(
           async () => {
-            this.listRes = await this.courseService.GetInstructorCourses(this.encodedToken);
+            this.listRes = await this.courseService.getInstructorCourses(this.encodedToken);
             this.courses = this.listRes.listContent;
             this.loadingResults = false;
-            if(this.clearInterval) {
-              clearInterval(handle);
-            }
           }
         , 1000);
       }
     );
-    this.subscription = this.patObservable.subscribe();
+    this.subscription = this.courseObservable.subscribe();
   }
 
   ngOnDestroy() {
-    this.clearInterval = true;
+    clearInterval(this.intervalHandle);
     this.subscription.unsubscribe();
   }
 

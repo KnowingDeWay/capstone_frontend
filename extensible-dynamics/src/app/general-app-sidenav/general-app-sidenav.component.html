@@ -3,7 +3,8 @@
     <a *ngFor="let route of routeInfo"
     mat-list-item
     [routerLink]= "['../', route.routeUrl]"
-    routerLinkActive= "list-item-active">
+    routerLinkActive= "list-item-active"
+    [state]="{data: stateData}">
       <mat-icon matListIcon> {{ route.iconName }} </mat-icon>
       {{route.routeName}}
     </a>

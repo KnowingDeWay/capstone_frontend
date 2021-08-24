@@ -1,7 +1,8 @@
 import { Router } from '@angular/router';
 import { Course } from './../models/canvas-models';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { GeneralAppSidenavComponent } from '../general-app-sidenav/general-app-sidenav.component';
 
 @Component({
   selector: 'app-course-overview',

@@ -17,6 +17,7 @@ export class GeneralAppSidenavComponent implements OnInit {
   @Input() routeGroup!: number;
   @Input() exitUrl!: string;
   @Input() exitPageName!: string;
+  @Input() stateData: any;
 
   private encodedToken: string = '';
   private token: any = undefined;
@@ -39,6 +40,7 @@ export class GeneralAppSidenavComponent implements OnInit {
       this.exitPageName = 'Exit to Course List';
     }
     let userType = this.token.user_type as UserType;
+    console.log('Sidenav: ' + this.stateData);
     this.routeInfo = this.routeInfo.concat(this.routeService.getGeneralRoutes(userType, this.routeGroup));
   }
 

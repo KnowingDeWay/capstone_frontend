@@ -25,6 +25,7 @@ import { RoutingService } from 'src/services/routing.service';
 import { UserService } from 'src/services/user-service.service';
 import { CanvasPatService } from 'src/services/canvas-pat.service';
 import { CanvasCoursesService } from 'src/services/canvas-courses.service';
+import { CanvasAssignmentService } from './../services/canvas-assignment.service';
 
 import { LoginComponent } from './login/login.component';
 import { UserHomeComponent } from './user-home/user-home.component';
@@ -36,6 +37,7 @@ import { EditPatDialog } from 'src/app/canvas-pat/canvas-pat.component';
 import { DeletePatDialog } from 'src/app/canvas-pat/canvas-pat.component';
 import { CoursesComponent } from './courses/courses.component';
 import { CourseOverviewComponent } from './course-overview/course-overview.component';
+import { ViewAssignmentsComponent } from './view-assignments/view-assignments.component';
 
 
 @NgModule({
@@ -51,6 +53,7 @@ import { CourseOverviewComponent } from './course-overview/course-overview.compo
     DeletePatDialog,
     CoursesComponent,
     CourseOverviewComponent,
+    ViewAssignmentsComponent
    ],
   imports: [
     BrowserModule,
@@ -71,7 +74,15 @@ import { CourseOverviewComponent } from './course-overview/course-overview.compo
     MatDividerModule,
     MatListModule
   ],
-  providers: [CookieService, AuthenticationService, RoutingService, UserService, CanvasPatService, CanvasCoursesService],
+  providers: [
+    CookieService,
+    AuthenticationService,
+    RoutingService,
+    UserService,
+    CanvasPatService,
+    CanvasCoursesService,
+    CanvasAssignmentService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
