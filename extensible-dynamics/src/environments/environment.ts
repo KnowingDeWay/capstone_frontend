@@ -18,7 +18,8 @@ export const environment = {
   courseOverviewUrl: 'course_overview',
   courseAssignmentsUrl: 'course_assignments',
   canvasApiKeyLength: 69,
-  canvasBaseInfrastructureUrl: 'https://canvas.uts.edu.au'
+  canvasBaseInfrastructureUrl: 'https://canvas.uts.edu.au',
+  courseGradebookUrl: 'course_gradebook'
 };
 
 export const routeInformation: RouteInformation[] = [
@@ -56,6 +57,12 @@ export const routeInformation: RouteInformation[] = [
     routeName: 'Course Assignments',
     routeUrl: environment.courseAssignmentsUrl,
     iconName: 'assignment',
+    routeGroup: RouteGroup.Course
+  },
+  {
+    routeName: 'Course Gradebook',
+    routeUrl:environment.courseGradebookUrl,
+    iconName: 'book',
     routeGroup: RouteGroup.Course
   }
 ];

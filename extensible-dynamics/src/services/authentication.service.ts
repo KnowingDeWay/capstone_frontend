@@ -71,7 +71,6 @@ export class AuthenticationService {
       }
     }).then(
       (response) => {
-        console.log(response.data);
         tokenValid = (response.data as boolean) ? 1 : 0;
       },
       (error) => {

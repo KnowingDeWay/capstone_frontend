@@ -18,6 +18,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
+import { MatTableModule } from '@angular/material/table';
 
 import { CookieService } from 'ngx-cookie-service';
 import { AuthenticationService } from '../services/authentication.service';
@@ -26,6 +27,7 @@ import { UserService } from 'src/services/user-service.service';
 import { CanvasPatService } from 'src/services/canvas-pat.service';
 import { CanvasCoursesService } from 'src/services/canvas-courses.service';
 import { CanvasAssignmentService } from './../services/canvas-assignment.service';
+import { CanvasGradebookDataService } from 'src/services/canvas-gradebook-data.service';
 
 import { LoginComponent } from './login/login.component';
 import { UserHomeComponent } from './user-home/user-home.component';
@@ -38,6 +40,7 @@ import { DeletePatDialog } from 'src/app/canvas-pat/canvas-pat.component';
 import { CoursesComponent } from './courses/courses.component';
 import { CourseOverviewComponent } from './course-overview/course-overview.component';
 import { ViewAssignmentsComponent } from './view-assignments/view-assignments.component';
+import { CourseTabsComponent } from './course-tabs/course-tabs.component';
 
 
 @NgModule({
@@ -53,7 +56,8 @@ import { ViewAssignmentsComponent } from './view-assignments/view-assignments.co
     DeletePatDialog,
     CoursesComponent,
     CourseOverviewComponent,
-    ViewAssignmentsComponent
+    ViewAssignmentsComponent,
+    CourseTabsComponent
    ],
   imports: [
     BrowserModule,
@@ -72,7 +76,8 @@ import { ViewAssignmentsComponent } from './view-assignments/view-assignments.co
     MatProgressBarModule,
     MatSidenavModule,
     MatDividerModule,
-    MatListModule
+    MatListModule,
+    MatTableModule
   ],
   providers: [
     CookieService,
@@ -81,7 +86,8 @@ import { ViewAssignmentsComponent } from './view-assignments/view-assignments.co
     UserService,
     CanvasPatService,
     CanvasCoursesService,
-    CanvasAssignmentService
+    CanvasAssignmentService,
+    CanvasGradebookDataService
   ],
   bootstrap: [AppComponent]
 })

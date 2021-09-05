@@ -1,3 +1,4 @@
+import { Byte } from '@angular/compiler/src/util';
 import { UserType } from 'src/enums/app-enums';
 
 export interface UserProfile {
@@ -10,5 +11,5 @@ export interface CanvasPersonalAccessToken {
   tokenName: string,
   accessToken: string,
   appUserId: number,
-  tokenActive: string
+  tokenActive: string,
 }

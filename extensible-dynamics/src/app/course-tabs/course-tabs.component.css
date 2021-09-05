@@ -13,19 +13,15 @@ mat-sidenav-content {
   text-align: center;
 }
 
-.list-divider {
-  padding-bottom: 2%;
+.table-content {
+  width: 100%;
 }
 
-.course-list {
-  padding-top: 2%;
-  padding-right: 2%;
+table {
+  text-align: center;
+  width: 50%;
 }
 
-.public-course {
-  color: green;
-}
-
-.private-course {
-  color: red;
+.column-name {
+  text-align: center;
 }
