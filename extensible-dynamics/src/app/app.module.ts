@@ -19,6 +19,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
+import { SatPopoverModule } from '@ncstate/sat-popover';
+import { FormsModule } from '@angular/forms';
 
 import { CookieService } from 'ngx-cookie-service';
 import { AuthenticationService } from '../services/authentication.service';
@@ -41,6 +43,9 @@ import { CoursesComponent } from './courses/courses.component';
 import { CourseOverviewComponent } from './course-overview/course-overview.component';
 import { ViewAssignmentsComponent } from './view-assignments/view-assignments.component';
 import { CourseTabsComponent } from './course-tabs/course-tabs.component';
+import { CellEditPopupComponent } from './cell-edit-popup/cell-edit-popup.component';
+import { TabFeedbackDialog } from './course-tabs/course-tabs.component';
+import { TabLoadingFeedbackDialog } from './course-tabs/course-tabs.component';
 
 
 @NgModule({
@@ -57,7 +62,10 @@ import { CourseTabsComponent } from './course-tabs/course-tabs.component';
     CoursesComponent,
     CourseOverviewComponent,
     ViewAssignmentsComponent,
-    CourseTabsComponent
+    CourseTabsComponent,
+    CellEditPopupComponent,
+    TabFeedbackDialog,
+    TabLoadingFeedbackDialog
    ],
   imports: [
     BrowserModule,
@@ -77,7 +85,9 @@ import { CourseTabsComponent } from './course-tabs/course-tabs.component';
     MatSidenavModule,
     MatDividerModule,
     MatListModule,
-    MatTableModule
+    MatTableModule,
+    SatPopoverModule,
+    FormsModule
   ],
   providers: [
     CookieService,

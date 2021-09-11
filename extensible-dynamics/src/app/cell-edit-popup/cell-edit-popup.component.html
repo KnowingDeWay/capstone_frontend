@@ -1,0 +1,14 @@
+<form>
+  <mat-form-field>
+    <input matInput maxLength="140" name="comment" [(ngModel)]="newValue">
+    <mat-hint align="end">{{newValue?.length || 0}}/140</mat-hint>
+  </mat-form-field>
+  <div id="error-msg" *ngIf="!isDataValid && column !== undefined">
+    This is a numeric column that only accepts values between
+    {{column.colMinValue}} and {{column.colMaxValue}} inclusive!
+  </div>
+  <div class="menu-actions">
+    <button mat-button type="button" color="primary" (click)="onCancel()">CANCEL</button>
+    <button mat-button type="submit" color="primary" (click)="onSubmit()">SAVE</button>
+  </div>
+</form>

@@ -61,7 +61,7 @@ export class CourseDataTable implements ICourseDataTable {
     );
   }
 
-  public toTableDataSource(): any {
+  public toTableDataSource(): any[] {
     let tableSource: any[] = [];
     this.students.forEach(
       x => {
@@ -86,6 +86,63 @@ export class CourseDataTable implements ICourseDataTable {
       }
     );
     return tableSource;
+  }
+
+  public alterTableByDataSource(dataSource: any[]) {
+    dataSource.forEach(
+      x => {
+        this.columnNames.forEach(
+          name => {
+            let currCol: DataColumn | undefined = this.get(name);
+            if(currCol !== undefined) {
+              if(currCol.dataType === ColumnDataType.Number) {
+                let numCol: NumericDataColumn = currCol as NumericDataColumn;
+                numCol.set(x['Name'], x[currCol.name]);
+              }
+              else {
+                let strCol: StringDataColumn = currCol as StringDataColumn;
+                strCol.set(x['Name'], x[currCol.name]);
+              }
+            }
+          }
+        );
+    });
+  }
+
+  public resetTableValues() {
+    this.assignmentGradeColumns.forEach(
+      x => {
+        let currCol: NumericDataColumn = x as NumericDataColumn;
+        currCol.rows.forEach(
+          y => {
+            y.valueChanged = false;
+            y.newValue = y.value;
+          }
+        );
+      }
+    );
+    this.customDataColumns.forEach(
+      x => {
+        if(x.dataType === ColumnDataType.Number) {
+          let currCol: NumericDataColumn = x as NumericDataColumn;
+          currCol.rows.forEach(
+            y => {
+              y.valueChanged = false;
+              y.newValue = y.value;
+            }
+          );
+        }
+        else {
+          let currCol: StringDataColumn = x as StringDataColumn;
+          currCol.rows.forEach(
+            y => {
+              y.valueChanged = false;
+              y.newValue = y.value;
+            }
+          );
+        }
+      }
+    );
   }
 
   public get(columnName: string): DataColumn | undefined {
@@ -157,6 +214,8 @@ export class NumericDataColumn implements DataColumn, INumericDataColumn {
     this.calcRule = data.calcRule;
     this.relatedDataId = data.relatedDataId;
     this.rows = data.rows;
+    this.colMinValue = data.colMinValue;
+    this.colMaxValue = data.colMaxValue
   }
 
   public get(studentName: string): number {
@@ -166,6 +225,15 @@ export class NumericDataColumn implements DataColumn, INumericDataColumn {
       }
     }
     return 0;
+  }
+
+  public set(studentName: string, newVal: number) {
+    for(let n = 0; n < this.rows.length; n++) {
+      if(this.rows[n].associatedUser.name === studentName) {
+        this.rows[n].newValue = newVal;
+        this.rows[n].valueChanged = true;
+      }
+    }
   }
 
   public getByStudentId(studentId: number): number {
@@ -221,6 +289,15 @@ export class StringDataColumn implements DataColumn {
     return '';
   }
 
+  public set(studentName: string, newVal: string) {
+    for(let n = 0; n < this.rows.length; n++) {
+      if(this.rows[n].associatedUser.name === studentName) {
+        this.rows[n].newValue = newVal;
+        this.rows[n].valueChanged = true;
+      }
+    }
+  }
+
   public getByStudentId(studentId: number): string {
     for(let n = 0; n < this.rows.length; n++) {
       if(this.rows[n].associatedUser.id === studentId) {
@@ -233,11 +310,13 @@ export class StringDataColumn implements DataColumn {
 }
 
 export interface NumericDataRow extends DataRowBase {
-  value: number
+  value: number;
+  newValue: number;
 }
 
 export interface StringDataRow extends DataRowBase {
-  value: string
+  value: string;
+  newValue: string;
 }
 
 export interface DataColumn {

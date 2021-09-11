@@ -25,3 +25,13 @@ table {
 .column-name {
   text-align: center;
 }
+
+.table-actions {
+  width: 100%;
+  text-align: center;
+}
+
+.table-actions > span {
+  padding-left: 2.5%;
+  padding-right: 2.5%;
+}
