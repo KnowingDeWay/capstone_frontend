@@ -19,7 +19,14 @@ mat-sidenav-content {
 
 table {
   text-align: center;
-  width: 50%;
+  width: 90%;
+  margin-top: 1.25%;
+  margin-bottom: 1.25%;
+}
+
+.col-actions > span {
+  padding-left: 2.5%;
+  padding-right: 2.5%;
 }
 
 .column-name {

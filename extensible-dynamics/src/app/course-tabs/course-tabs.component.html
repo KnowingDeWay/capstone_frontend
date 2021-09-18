@@ -6,10 +6,20 @@
   <mat-sidenav-content>
     <div class="table-content" fxLayoutAlign="center center" fxLayout="column" fxFlexFill>
       <mat-spinner *ngIf="loadingResults" diameter="70"></mat-spinner>
-      <button mat-raised-button color="primary">+ Add New Column</button>
+      <button mat-raised-button [disabled]="loadingResults" color="primary"
+      (click)="openAddNewColumnDialog()">+ Add New Column</button>
       <table mat-table [dataSource]="dataSource">
         <ng-container *ngFor="let column of displayedColumns" matColumnDef={{column}}>
-          <th mat-header-cell *matHeaderCellDef class="column-name">{{column}}</th>
+          <th mat-header-cell *matHeaderCellDef class="column-name">
+            {{column}}
+            <ng-container *ngIf="getColumnByName(column) !== undefined">
+              <div class="col-actions" *ngIf="getColumnByName(column)?.columnType !== 0">
+                <button mat-raised-button color="primary">Edit</button>
+                <span></span>
+                <button mat-raised-button color="warn">Delete</button>
+              </div>
+            </ng-container>
+          </th>
           <ng-container *ngIf="column !== 'Name'">
             <td mat-cell *matCellDef="let row" [satPopoverAnchor]="popOver" (click)="popOver.open()">
               {{row[column]}}
@@ -30,9 +40,11 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
       <div class="table-actions">
-        <button mat-raised-button type="submit" color="primary" (click)="submitValueChanges()">Submit Changes</button>
+        <button mat-raised-button [disabled]="loadingResults"
+        type="submit" color="primary" (click)="submitValueChanges()">Submit Changes</button>
         <span></span>
-        <button mat-raised-button type="clear" color="warn" (click)="clearChanges()">Clear Changes</button>
+        <button mat-raised-button [disabled]="loadingResults"
+        type="clear" color="warn" (click)="clearChanges()">Clear Changes</button>
       </div>
     </div>
   </mat-sidenav-content>

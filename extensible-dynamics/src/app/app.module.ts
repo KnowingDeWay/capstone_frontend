@@ -21,6 +21,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { SatPopoverModule } from '@ncstate/sat-popover';
 import { FormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { NgxMatFileInputModule } from '@angular-material-components/file-input';
 
 import { CookieService } from 'ngx-cookie-service';
 import { AuthenticationService } from '../services/authentication.service';
@@ -46,6 +48,7 @@ import { CourseTabsComponent } from './course-tabs/course-tabs.component';
 import { CellEditPopupComponent } from './cell-edit-popup/cell-edit-popup.component';
 import { TabFeedbackDialog } from './course-tabs/course-tabs.component';
 import { TabLoadingFeedbackDialog } from './course-tabs/course-tabs.component';
+import { AddColumnDialog } from './course-tabs/course-tabs.component';
 
 
 @NgModule({
@@ -65,7 +68,8 @@ import { TabLoadingFeedbackDialog } from './course-tabs/course-tabs.component';
     CourseTabsComponent,
     CellEditPopupComponent,
     TabFeedbackDialog,
-    TabLoadingFeedbackDialog
+    TabLoadingFeedbackDialog,
+    AddColumnDialog
    ],
   imports: [
     BrowserModule,
@@ -87,7 +91,9 @@ import { TabLoadingFeedbackDialog } from './course-tabs/course-tabs.component';
     MatListModule,
     MatTableModule,
     SatPopoverModule,
-    FormsModule
+    FormsModule,
+    MatSelectModule,
+    NgxMatFileInputModule
   ],
   providers: [
     CookieService,
