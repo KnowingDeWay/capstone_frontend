@@ -1,0 +1,15 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<h1 mat-dialog-title>
+  Delete Custom Column
+</h1>
+<div text-align="center">
+  Are you sure you want to delete this column: {{data.colName}}?
+</div>
+<div mat-dialog-actions fxLayoutAlign="center">
+  <button mat-raised-button color="warn" [disabled]="isLoading" [mat-dialog-close]="true" (click)="onConfirmClick()">
+    Yes
+  </button>
+  <button mat-raised-button color="primary" [disabled]="isLoading" [mat-dialog-close]="false" (click)="onCancelClick()">
+    No
+  </button>
+</div>

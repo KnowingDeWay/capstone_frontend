@@ -81,7 +81,7 @@ export class CanvasGradebookDataService {
         Authorization: 'Bearer ' + encodedToken
       }
     };
-    axios.post(`${environment.baseUrl}/api/CourseTabsController/AddNewTableColumn/${courseId}`, request, config).then(
+    await axios.post(`${environment.baseUrl}/api/CourseTabsController/AddNewTableColumn/${courseId}`, request, config).then(
       (response) => {
         responseText = response.data;
       },
@@ -109,7 +109,8 @@ export class CanvasGradebookDataService {
         Authorization: 'Bearer ' + encodedToken
       }
     };
-    axios.delete(`${environment.baseUrl}/api/CourseTabsController/DeleteCustomColumn/${courseId}/${relatedDataId}`, config).then(
+    await axios.delete(`${environment.baseUrl}/api/CourseTabsController/DeleteCustomColumn/${courseId}/${relatedDataId}`, config)
+    .then(
       (response) => {
         responseText = response.data;
       },

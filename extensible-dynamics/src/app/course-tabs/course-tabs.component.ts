@@ -1,5 +1,5 @@
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { ColumnDataType, ColumnType, CourseDataTable, DataColumn, ICourseDataTable } from './../models/data-structures';
+import { ColumnDataType, ColumnType, CourseDataTable, DataColumn, ICourseDataTable, INumericDataColumn, IStringDataColumn } from './../models/data-structures';
 import { ObjectResponse } from './../models/response-models';
 import { Router } from '@angular/router';
 import { Course } from './../models/canvas-models';
@@ -15,17 +15,28 @@ export interface TabFeedbackDialogData {
   title: string;
 }
 
+export enum LoadingActionType {
+  Update_Values, Add_Column, Edit_Column, Delete_Column
+}
+
 export interface TabLoadingFeedbackData {
   message: string;
   title: string;
   gradebook: CourseDataTable;
-  token: string;
+  encodedToken: string;
 }
 
 export interface AddColumnDialogData {
   encodedToken: string,
   request: NewColumnRequest,
   courseId: number
+}
+
+export interface DeleteColumnDialogData {
+  relatedDataId: number,
+  encodedToken: string,
+  courseId: number,
+  colName: string
 }
 
 
@@ -98,15 +109,16 @@ export class CourseTabsComponent implements OnInit {
 
   async submitValueChanges() {
     this.gradebook.alterTableByDataSource(this.dataSource);
+    let dialogData: TabLoadingFeedbackData = {
+      message: 'Submitting Changes...',
+      title: 'Course Data Table',
+      gradebook: this.gradebook,
+      encodedToken: this.encodedToken
+    };
     this.matDialog.open(
       TabLoadingFeedbackDialog, {
         width: '35%',
-        data: {
-          message: 'Submitting Changes...',
-          title: 'Course Data Table',
-          gradebook: this.gradebook,
-          token: this.encodedToken
-        },
+        data: dialogData,
         disableClose: true
       }
     );
@@ -119,14 +131,37 @@ export class CourseTabsComponent implements OnInit {
   openAddNewColumnDialog() {
     const dialogRef = this.matDialog.open(AddColumnDialog, {
       width: '35%',
-      data: {},
-      disableClose: false
+      data: {
+        encodedToken: this.encodedToken,
+        courseId: this.course.id
+      },
+      disableClose: true
     });
     dialogRef.afterClosed().subscribe((result) => {
       if(result) {
         this.ngOnInit();
       }
     });
+  }
+
+  openDeleteColumnDialog(column: DataColumn | undefined) {
+    if(column !== undefined) {
+      const dialogRef = this.matDialog.open(DeleteColumnConfirmDialog, {
+        width: '35%',
+        data: {
+          encodedToken: this.encodedToken,
+          relatedDataId: column.relatedDataId,
+          courseId: this.course.id,
+          colName: column.name
+        },
+        disableClose: true
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        if(result) {
+          this.ngOnInit();
+        }
+      });
+    }
   }
 
 }
@@ -167,10 +202,9 @@ export class TabLoadingFeedbackDialog {
     }
 
   async onLoad(): Promise<void> {
-    let response: string = await this.gradebookService.updateCourseDataTable(this.data.token, this.data.gradebook);
-    this.isLoading = false;
+    let response: string = await this.gradebookService.updateCourseDataTable(this.data.encodedToken, this.data.gradebook);
     console.log(response);
-    console.log(this.data.gradebook);
+    this.isLoading = false;
     this.feedbackDialog.open(TabFeedbackDialog, {
       width: '35%',
       data: {
@@ -179,6 +213,14 @@ export class TabLoadingFeedbackDialog {
       }
     });
     this.dialogRef.close();
+  }
+
+  async addColumn() {
+
+  }
+
+  async deleteColumn() {
+
   }
 }
 
@@ -197,12 +239,11 @@ export class AddColumnDialog {
   ]);
 
   public minValControl: FormControl = new FormControl('', [
-    Validators.pattern('^-?[0-9]\d*(\.\d+)?$')
+    Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')
   ]);
 
   public maxValControl: FormControl = new FormControl('', [
-    Validators.pattern('^-?[0-9]\d*(\.\d+)?$'),
-    Validators.minLength(this.minValControl.value)
+    Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')
   ]);
 
   public csvFileUploadControl: FormControl = new FormControl('', [
@@ -235,14 +276,30 @@ export class AddColumnDialog {
   public columnDataTypes = ColumnDataType;
   public columnTypeKeys: number[] = [];
   public columnDataTypeKeys: number[] = [];
-
-  private fileContent: string = '';
+  public validMaxNum: boolean = true;
 
   constructor(
     public dialogRef: MatDialogRef<AddColumnDialog>,
     @Inject(MAT_DIALOG_DATA) public data: AddColumnDialogData,
     private gradebookService: CanvasGradebookDataService, private feedbackDialog: MatDialog,
     private formBuilder: FormBuilder) {
+      this.initEnums();
+      this.initValidationFields();
+    }
+
+    initValidationFields() {
+      this.addColumnForm.get('minValControl')?.valueChanges.subscribe(
+        x => {
+          let minVal: number = (!isNaN(Number.parseFloat(x))) ? Number.parseFloat(x): Number.MIN_VALUE;
+          this.addColumnForm.get('maxValControl')?.setValidators([
+            Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$'),
+            Validators.min(minVal)
+          ]);
+        }
+      );
+    }
+
+    initEnums() {
       Object.keys(ColumnType).filter(x => !isNaN(Number(x))).forEach(
         x => {
           if(Number(x) !== 0) {
@@ -260,18 +317,21 @@ export class AddColumnDialog {
     async onFormSubmit() {
       this.isLoading = true;
       this.selectedFile = this.addColumnForm.get('csvFileUploadControl')?.value as File;
+      let minValue: string = this.addColumnForm.get('maxValControl')?.value;
+      let maxValue: string = this.addColumnForm.get('minValControl')?.value;
       let newColReq: NewColumnRequest = {
         newColumn: {
-          columnId: '',
-          name: this.addColumnForm.get('nameControl')?.value,
-          dataType: this.selectedDataType,
-          columnType: this.selectedColType,
+          columnId: '00000000-0000-0000-0000-000000000000',
+          name: this.addColumnForm.get('nameControl')?.value as string,
+          dataType: this.addColumnForm.get('columnDataTypeControl')?.value,
+          columnType: this.addColumnForm.get('columnTypeControl')?.value,
           relatedDataId: -1,
-          calcRule: this.addColumnForm.get('calcRuleControl')?.value,
-          colMaxValue: this.addColumnForm.get('maxValControl')?.value,
-          colMinValue: this.addColumnForm.get('minValControl')?.value
+          calcRule: this.addColumnForm.get('calcRuleControl')?.value as string,
+          colMaxValue: (maxValue !== '') ? Number.parseFloat(maxValue) : Number.MAX_VALUE,
+          colMinValue: (minValue !== '') ? Number.parseFloat(minValue) : Number.MAX_VALUE * -1
         },
-        csvFileContent: await this.selectedFile.text()
+        csvFileContent: (this.addColumnForm.get('csvFileUploadControl')?.value === '')
+        ? '' : await this.selectedFile.text()
       };
       let resMessage: string = await this.gradebookService.addNewCustomColumn(this.data.encodedToken,
         this.data.courseId, newColReq);
@@ -283,16 +343,46 @@ export class AddColumnDialog {
           message: resMessage
         }
       });
-    }
-
-    onMinValueChange(newMinValue: number) {
-      this.addColumnForm.get('maxValControl')?.setValidators([
-        Validators.pattern('^-?[0-9]\d*(\.\d+)?$'),
-        Validators.minLength(newMinValue)
-      ]);
+      this.dialogRef.close(true);
     }
 
     cancelSubmit() {
-      this.dialogRef.close();
+      this.dialogRef.close(false);
     }
+}
+
+@Component({
+  selector: 'delete-confirm-dialog',
+  templateUrl: 'delete-confirm-dialog.html',
+})
+export class DeleteColumnConfirmDialog {
+
+  public isLoading: boolean = false;
+
+  constructor(
+    public dialogRef: MatDialogRef<TabFeedbackDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DeleteColumnDialogData,
+    private gradebookService: CanvasGradebookDataService, private feedbackDialog: MatDialog) {
+
+    }
+
+  async onConfirmClick(): Promise<void> {
+    this.isLoading = true;
+    let resText: string = await this.gradebookService.deleteCustomColumn(this.data.encodedToken,
+      this.data.courseId, this.data.relatedDataId);
+    this.isLoading = false;
+    this.feedbackDialog.open(TabFeedbackDialog, {
+      width: '35%',
+      data: {
+        title: 'Delete Custom Column',
+        message: resText
+      }
+    });
+    this.dialogRef.close();
+  }
+
+  onCancelClick(): void {
+    this.dialogRef.close();
+  }
+
 }

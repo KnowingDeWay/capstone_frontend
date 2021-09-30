@@ -49,6 +49,7 @@ import { CellEditPopupComponent } from './cell-edit-popup/cell-edit-popup.compon
 import { TabFeedbackDialog } from './course-tabs/course-tabs.component';
 import { TabLoadingFeedbackDialog } from './course-tabs/course-tabs.component';
 import { AddColumnDialog } from './course-tabs/course-tabs.component';
+import { DeleteColumnConfirmDialog } from './course-tabs/course-tabs.component';
 
 
 @NgModule({
@@ -69,7 +70,8 @@ import { AddColumnDialog } from './course-tabs/course-tabs.component';
     CellEditPopupComponent,
     TabFeedbackDialog,
     TabLoadingFeedbackDialog,
-    AddColumnDialog
+    AddColumnDialog,
+    DeleteColumnConfirmDialog
    ],
   imports: [
     BrowserModule,

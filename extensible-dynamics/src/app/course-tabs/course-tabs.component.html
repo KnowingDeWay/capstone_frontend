@@ -16,7 +16,7 @@
               <div class="col-actions" *ngIf="getColumnByName(column)?.columnType !== 0">
                 <button mat-raised-button color="primary">Edit</button>
                 <span></span>
-                <button mat-raised-button color="warn">Delete</button>
+                <button mat-raised-button color="warn" (click)="openDeleteColumnDialog(getColumnByName(column))">Delete</button>
               </div>
             </ng-container>
           </th>
