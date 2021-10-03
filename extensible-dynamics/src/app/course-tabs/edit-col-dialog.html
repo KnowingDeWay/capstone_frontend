@@ -1,0 +1,107 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<h1 mat-dialog-title>
+  Edit Custom Column
+</h1>
+<form [formGroup]="editColumnForm" fxLayoutAlign="stretch" fxLayout="column" (ngSubmit)="onFormSubmit()">
+  <mat-form-field>
+    <input matInput [formControl]="nameControl" name="colName" placeholder="Column Name:">
+    <mat-error *ngIf="nameControl.invalid">
+      Column name <strong>cannot</strong> be empty
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Column Type</mat-label>
+    <mat-select required [formControl]="columnTypeControl">
+      <mat-option *ngFor="let key of columnTypeKeys" [value]="key">
+        {{columnTypes[key]}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="columnTypeControl.invalid">
+      You <strong>must select</strong> a column type
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field *ngIf="columnTypeControl.value !== 3">
+    <mat-label>Column Data Type</mat-label>
+    <mat-select required [formControl]="columnDataTypeControl">
+      <mat-option *ngFor="let key of columnDataTypeKeys" [value]="key">
+        {{columnDataTypes[key]}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="columnDataTypeControl.invalid">
+      You <strong>must select</strong> a data type
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field *ngIf="columnTypeControl.value === 3">
+    <mat-label>Column Data Type</mat-label>
+    <mat-select required [formControl]="columnDataTypeControl">
+      <mat-option [value]="0">
+        Number
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="columnDataTypeControl.invalid">
+      You <strong>must select</strong> a data type
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field *ngIf="columnTypeControl.value === 3">
+    <input matInput [formControl]="calcRuleControl" name="calcRule" placeholder="Calculation Rule:">
+    <mat-error *ngIf="calcRuleControl.invalid">
+      For a derived column, a mathematical expression <strong>must</strong> be specified
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field *ngIf="columnDataTypeControl.value === 0">
+    <mat-hint>If you do not wish to have a minimum value, then leave this field blank</mat-hint>
+    <input matInput [formControl]="minValControl"
+    name="minVal" placeholder="Mininum Column Value:">
+    <mat-error *ngIf="minValControl.invalid">
+      The minimum value of a numeric column <strong>cannot</strong> be empty and must be a valid <strong>number</strong>
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field *ngIf="columnDataTypeControl.value === 0">
+    <mat-hint>If you do not wish to have a maximum value, then leave this field blank</mat-hint>
+    <input matInput [formControl]="maxValControl" name="maxVal" placeholder="Maxinum Column Value:">
+    <mat-error *ngIf="maxValControl.invalid || !validMaxNum">
+      The maximum value of a numeric column <strong>cannot</strong> be empty and must be a valid <strong>number</strong>
+      that is <strong>greater or equal to</strong> than the mininum acceptable value.
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field *ngIf="columnTypeControl.value === 2">
+    <mat-hint>Upload .csv file</mat-hint>
+    <ngx-mat-file-input [formControl]="csvFileUploadControl" [multiple]="false" accept=".csv" color="primary">
+
+    </ngx-mat-file-input>
+  </mat-form-field>
+  <div mat-dialog-actions fxLayoutAlign="center">
+    <button mat-raised-button *ngIf="columnTypeControl.value === 3"
+    color="primary"
+    [disabled]="isLoading || nameControl.invalid || calcRuleControl.invalid
+    || minValControl.invalid || maxValControl.invalid || !validMaxNum || !formValChanged"
+    type="submit">Ok</button>
+    <button mat-raised-button *ngIf="columnTypeControl.value === 1 && columnDataTypeControl.value === 0"
+    color="primary"
+    [disabled]="isLoading || nameControl.invalid
+    || minValControl.invalid || maxValControl.invalid || !validMaxNum || !formValChanged"
+    type="submit">Ok</button>
+    <button mat-raised-button *ngIf="columnTypeControl.value === 1 && columnDataTypeControl.value === 1"
+    color="primary"
+    [disabled]="isLoading || nameControl.invalid || !formValChanged"
+    type="submit">Ok</button>
+    <button mat-raised-button *ngIf="columnTypeControl.value === 2 && columnDataTypeControl.value === 0"
+    color="primary"
+    [disabled]="isLoading || nameControl.invalid || csvFileUploadControl.invalid
+    || minValControl.invalid || maxValControl.invalid || !validMaxNum || !formValChanged"
+    type="submit">Ok</button>
+    <button mat-raised-button *ngIf="columnTypeControl.value === 2 && columnDataTypeControl.value === 1"
+    color="primary"
+    [disabled]="isLoading || nameControl.invalid || csvFileUploadControl.invalid || !formValChanged"
+    type="submit">Ok</button>
+    <button mat-raised-button *ngIf="columnTypeControl.value === '' || columnDataTypeControl.value === ''"
+    color="primary"
+    [disabled]="true"
+    type="submit">Ok</button>
+    <button mat-raised-button
+    color="warn" type="reset" [disabled]="isLoading"
+    (click)="cancelSubmit()">
+      Cancel
+    </button>
+  </div>
+</form>

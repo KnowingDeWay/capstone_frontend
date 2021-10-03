@@ -1,10 +1,11 @@
+import { Subscription } from 'rxjs';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ColumnDataType, ColumnType, CourseDataTable, DataColumn, ICourseDataTable, INumericDataColumn, IStringDataColumn } from './../models/data-structures';
 import { ObjectResponse } from './../models/response-models';
 import { Router } from '@angular/router';
 import { Course } from './../models/canvas-models';
 import { CanvasGradebookDataService } from './../../services/canvas-gradebook-data.service';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from 'src/environments/environment';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -27,6 +28,12 @@ export interface TabLoadingFeedbackData {
 }
 
 export interface AddColumnDialogData {
+  encodedToken: string,
+  request: NewColumnRequest,
+  courseId: number
+}
+
+export interface EditColumnDialogData {
   encodedToken: string,
   request: NewColumnRequest,
   courseId: number
@@ -142,6 +149,29 @@ export class CourseTabsComponent implements OnInit {
         this.ngOnInit();
       }
     });
+  }
+
+  openEditColumnDialog(column: DataColumn | undefined) {
+    if(column !== undefined) {
+      let request: NewColumnRequest = {
+        newColumn: column,
+        csvFileContent: ''
+      };
+      const dialogRef = this.matDialog.open(EditColumnDialog, {
+        width: '35%',
+        data: {
+          encodedToken: this.encodedToken,
+          courseId: this.course.id,
+          request: request
+        },
+        disableClose: true
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        if(result) {
+          this.ngOnInit();
+        }
+      });
+    }
   }
 
   openDeleteColumnDialog(column: DataColumn | undefined) {
@@ -340,6 +370,160 @@ export class AddColumnDialog {
         width: '35%',
         data: {
           title: 'Add New Custom Column',
+          message: resMessage
+        }
+      });
+      this.dialogRef.close(true);
+    }
+
+    cancelSubmit() {
+      this.dialogRef.close(false);
+    }
+}
+
+@Component({
+  selector: 'edit-col-dialog',
+  templateUrl: 'edit-col-dialog.html',
+})
+export class EditColumnDialog implements OnDestroy {
+
+  public nameControl: FormControl = new FormControl('', [
+    Validators.required,
+  ]);
+
+  public calcRuleControl: FormControl = new FormControl('', [
+    Validators.required
+  ]);
+
+  public minValControl: FormControl = new FormControl('', [
+    Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')
+  ]);
+
+  public maxValControl: FormControl = new FormControl('', [
+    Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')
+  ]);
+
+  public csvFileUploadControl: FormControl = new FormControl('', [
+    Validators.required
+  ]);
+
+  public columnTypeControl: FormControl = new FormControl('', [
+    Validators.required
+  ]);
+
+  public columnDataTypeControl: FormControl = new FormControl('', [
+    Validators.required
+  ]);
+
+  public editColumnForm: FormGroup = this.formBuilder.group({
+    nameControl: this.nameControl,
+    calcRuleControl: this.calcRuleControl,
+    minValControl: this.minValControl,
+    maxValControl: this.maxValControl,
+    csvFileUploadControl: this.csvFileUploadControl,
+    columnTypeControl: this.columnTypeControl,
+    columnDataTypeControl: this.columnDataTypeControl,
+  });
+
+  public isLoading: boolean = false;
+  public selectedColType: number = 0;
+  public selectedDataType: number = 0;
+  public selectedFile!: File;
+  public columnTypes = ColumnType;
+  public columnDataTypes = ColumnDataType;
+  public columnTypeKeys: number[] = [];
+  public columnDataTypeKeys: number[] = [];
+  public validMaxNum: boolean = true;
+  public formValChanged: boolean = false;
+  private formValSub!: Subscription;
+
+  constructor(
+    public dialogRef: MatDialogRef<EditColumnDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: EditColumnDialogData,
+    private gradebookService: CanvasGradebookDataService, private feedbackDialog: MatDialog,
+    private formBuilder: FormBuilder) {
+      this.initEnums();
+      this.initValidationFields();
+      this.initFormValues();
+      this.formValSub = this.editColumnForm.valueChanges.subscribe(
+        () => {
+          this.formValChanged = true;
+        }
+      );
+    }
+
+    ngOnDestroy(): void {
+      this.formValSub.unsubscribe();
+    }
+
+    initValidationFields() {
+      this.editColumnForm.get('minValControl')?.valueChanges.subscribe(
+        x => {
+          let minVal: number = (!isNaN(Number.parseFloat(x))) ? Number.parseFloat(x): Number.MIN_VALUE;
+          this.editColumnForm.get('maxValControl')?.setValidators([
+            Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$'),
+            Validators.min(minVal)
+          ]);
+        }
+      );
+    }
+
+    initEnums() {
+      Object.keys(ColumnType).filter(x => !isNaN(Number(x))).forEach(
+        x => {
+          if(Number(x) !== 0) {
+            this.columnTypeKeys.push(Number(x));
+          }
+        }
+      );
+      Object.keys(ColumnDataType).filter(x => !isNaN(Number(x))).forEach(
+        x => {
+          this.columnDataTypeKeys.push(Number(x));
+        }
+      );
+    }
+
+    initFormValues() {
+      this.editColumnForm.setValue({
+        nameControl: this.data.request.newColumn.name,
+        columnDataTypeControl: this.data.request.newColumn.dataType,
+        columnTypeControl: this.data.request.newColumn.columnType,
+        calcRuleControl: this.data.request.newColumn.calcRule,
+        maxValControl: (this.data.request.newColumn.colMaxValue != Number.MAX_VALUE) ? this.data.request.newColumn.colMaxValue : '',
+        minValControl: (this.data.request.newColumn.colMinValue != Number.MAX_VALUE * -1) ? this.data.request.newColumn.colMinValue : '',
+        csvFileUploadControl: ''
+      },
+      {
+        emitEvent: true
+      });
+    }
+
+    async onFormSubmit() {
+      this.isLoading = true;
+      this.selectedFile = this.editColumnForm.get('csvFileUploadControl')?.value as File;
+      let minValue: string = this.editColumnForm.get('maxValControl')?.value;
+      let maxValue: string = this.editColumnForm.get('minValControl')?.value;
+      let newColReq: NewColumnRequest = {
+        newColumn: {
+          columnId: this.data.request.newColumn.columnId,
+          name: this.editColumnForm.get('nameControl')?.value as string,
+          dataType: this.editColumnForm.get('columnDataTypeControl')?.value,
+          columnType: this.editColumnForm.get('columnTypeControl')?.value,
+          relatedDataId: this.data.request.newColumn.relatedDataId,
+          calcRule: this.editColumnForm.get('calcRuleControl')?.value as string,
+          colMaxValue: (maxValue !== '') ? Number.parseFloat(maxValue) : Number.MAX_VALUE,
+          colMinValue: (minValue !== '') ? Number.parseFloat(minValue) : Number.MAX_VALUE * -1
+        },
+        csvFileContent: (this.editColumnForm.get('csvFileUploadControl')?.value === '')
+        ? '' : await this.selectedFile.text()
+      };
+      let resMessage: string = await this.gradebookService.editCustomColumn(this.data.encodedToken,
+        this.data.courseId, newColReq);
+      this.isLoading = false;
+      this.feedbackDialog.open(TabFeedbackDialog, {
+        width: '35%',
+        data: {
+          title: 'Edit Custom Column',
           message: resMessage
         }
       });

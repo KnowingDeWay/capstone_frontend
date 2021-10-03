@@ -102,6 +102,34 @@ export class CanvasGradebookDataService {
     return responseText;
   }
 
+  public async editCustomColumn(encodedToken: string, courseId: number, request: NewColumnRequest) : Promise<string> {
+    let responseText: string = '';
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: 'Bearer ' + encodedToken
+      }
+    };
+    await axios.put(`${environment.baseUrl}/api/CourseTabsController/EditCustomColumn/${courseId}`, request, config).then(
+      (response) => {
+        responseText = response.data;
+      },
+      (error) => {
+        if(error.response !== undefined) {
+          if(error.response.data !== null) {
+            responseText = error.response.data;
+          }
+          else {
+            responseText = error.message;
+          }
+        }
+        else {
+          responseText = error.message;
+        }
+      }
+    );
+    return responseText;
+  }
+
   public async deleteCustomColumn(encodedToken: string, courseId: number, relatedDataId: number): Promise<string> {
     let responseText: string = '';
     const config: AxiosRequestConfig = {

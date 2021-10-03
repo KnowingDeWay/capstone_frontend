@@ -49,6 +49,7 @@ import { CellEditPopupComponent } from './cell-edit-popup/cell-edit-popup.compon
 import { TabFeedbackDialog } from './course-tabs/course-tabs.component';
 import { TabLoadingFeedbackDialog } from './course-tabs/course-tabs.component';
 import { AddColumnDialog } from './course-tabs/course-tabs.component';
+import { EditColumnDialog } from './course-tabs/course-tabs.component';
 import { DeleteColumnConfirmDialog } from './course-tabs/course-tabs.component';
 
 
@@ -71,6 +72,7 @@ import { DeleteColumnConfirmDialog } from './course-tabs/course-tabs.component';
     TabFeedbackDialog,
     TabLoadingFeedbackDialog,
     AddColumnDialog,
+    EditColumnDialog,
     DeleteColumnConfirmDialog
    ],
   imports: [
