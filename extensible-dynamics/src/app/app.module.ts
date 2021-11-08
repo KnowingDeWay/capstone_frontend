@@ -1,3 +1,4 @@
+import { CanvasUserService } from './../services/canvas-user.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -23,6 +24,7 @@ import { SatPopoverModule } from '@ncstate/sat-popover';
 import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxMatFileInputModule } from '@angular-material-components/file-input';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { CookieService } from 'ngx-cookie-service';
 import { AuthenticationService } from '../services/authentication.service';
@@ -32,6 +34,7 @@ import { CanvasPatService } from 'src/services/canvas-pat.service';
 import { CanvasCoursesService } from 'src/services/canvas-courses.service';
 import { CanvasAssignmentService } from './../services/canvas-assignment.service';
 import { CanvasGradebookDataService } from 'src/services/canvas-gradebook-data.service';
+import { CourseCustomDataService} from 'src/services/course-custom-data.service';
 
 import { LoginComponent } from './login/login.component';
 import { UserHomeComponent } from './user-home/user-home.component';
@@ -51,6 +54,7 @@ import { TabLoadingFeedbackDialog } from './course-tabs/course-tabs.component';
 import { AddColumnDialog } from './course-tabs/course-tabs.component';
 import { EditColumnDialog } from './course-tabs/course-tabs.component';
 import { DeleteColumnConfirmDialog } from './course-tabs/course-tabs.component';
+import { CustomCourseDataComponent } from './custom-course-data/custom-course-data.component';
 
 
 @NgModule({
@@ -73,7 +77,8 @@ import { DeleteColumnConfirmDialog } from './course-tabs/course-tabs.component';
     TabLoadingFeedbackDialog,
     AddColumnDialog,
     EditColumnDialog,
-    DeleteColumnConfirmDialog
+    DeleteColumnConfirmDialog,
+    CustomCourseDataComponent
    ],
   imports: [
     BrowserModule,
@@ -97,7 +102,8 @@ import { DeleteColumnConfirmDialog } from './course-tabs/course-tabs.component';
     SatPopoverModule,
     FormsModule,
     MatSelectModule,
-    NgxMatFileInputModule
+    NgxMatFileInputModule,
+    MatPaginatorModule
   ],
   providers: [
     CookieService,
@@ -107,7 +113,9 @@ import { DeleteColumnConfirmDialog } from './course-tabs/course-tabs.component';
     CanvasPatService,
     CanvasCoursesService,
     CanvasAssignmentService,
-    CanvasGradebookDataService
+    CanvasGradebookDataService,
+    CourseCustomDataService,
+    CanvasUserService
   ],
   bootstrap: [AppComponent]
 })

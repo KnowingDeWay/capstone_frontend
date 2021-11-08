@@ -6,3 +6,7 @@ export enum UserType {
 export enum RouteGroup {
   Auth, General, Course
 }
+
+export enum CustomDataType {
+  Number, Boolean, Text
+}

@@ -47,5 +47,4 @@ export class CoursesComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
   }
-
 }

@@ -19,7 +19,8 @@ export const environment = {
   courseAssignmentsUrl: 'course_assignments',
   canvasApiKeyLength: 69,
   canvasBaseInfrastructureUrl: 'https://canvas.uts.edu.au',
-  courseGradebookUrl: 'course_gradebook'
+  courseGradebookUrl: 'course_gradebook',
+  customCourseStudentDataUrl: 'student_custom_data'
 };
 
 export const routeInformation: RouteInformation[] = [
@@ -61,9 +62,15 @@ export const routeInformation: RouteInformation[] = [
   },
   {
     routeName: 'Course Gradebook',
-    routeUrl:environment.courseGradebookUrl,
+    routeUrl: environment.courseGradebookUrl,
     iconName: 'book',
     routeGroup: RouteGroup.Course
+  },
+  {
+    routeName: 'Course Student Custom Data',
+    routeUrl: environment.customCourseStudentDataUrl,
+    routeGroup: RouteGroup.Course,
+    iconName: 'ballot'
   }
 ];
 

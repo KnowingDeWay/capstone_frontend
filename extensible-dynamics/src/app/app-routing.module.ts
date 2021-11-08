@@ -1,3 +1,4 @@
+import { CustomCourseDataComponent } from './custom-course-data/custom-course-data.component';
 import { CourseTabsComponent } from './course-tabs/course-tabs.component';
 import { ViewAssignmentsComponent } from './view-assignments/view-assignments.component';
 import { CourseOverviewComponent } from './course-overview/course-overview.component';
@@ -17,7 +18,8 @@ const routes: Routes = [
   { path: environment.canvasCoursesUrl, component: CoursesComponent, canActivate: [AuthGuard] },
   { path: environment.courseOverviewUrl, component: CourseOverviewComponent, canActivate: [AuthGuard] },
   { path: environment.courseAssignmentsUrl, component: ViewAssignmentsComponent, canActivate: [AuthGuard] },
-  { path: environment.courseGradebookUrl, component: CourseTabsComponent, canActivate: [AuthGuard] }
+  { path: environment.courseGradebookUrl, component: CourseTabsComponent, canActivate: [AuthGuard] },
+  { path: environment.customCourseStudentDataUrl, component: CustomCourseDataComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

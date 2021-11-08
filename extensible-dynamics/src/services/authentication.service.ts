@@ -1,9 +1,8 @@
-import { Observable } from 'rxjs';
 import { environment } from './../environments/environment';
 import { Injectable } from '@angular/core';
 import axios, { AxiosRequestConfig } from 'axios';
 import { LoginCredentials } from '../app/models/request-models';
-import { AuthResponse, ObjectResponse } from '../app/models/response-models';
+import { AuthResponse} from '../app/models/response-models';
 
 @Injectable({
   providedIn: 'root'

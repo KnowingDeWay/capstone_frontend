@@ -1,0 +1,32 @@
+<app-general-app-navbar [inputSideNav]="sidenav"></app-general-app-navbar>
+<mat-sidenav-container autosize>
+  <mat-sidenav #sidenav mode="over">
+    <app-general-app-sidenav #appnav [routeGroup]="2" [stateData]="course"></app-general-app-sidenav>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="student-list" fxLayoutAlign="center center" fxLayout="column" fxFlexFill>
+      <div class="loading-spinner" *ngIf="loading">
+        <mat-spinner diameter="70"></mat-spinner>
+      </div>
+      <div class="students">
+        <table mat-table [dataSource]="students" class="student-table">
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Student Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+          </ng-container>
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef> Email </th>
+            <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+          </ng-container>
+          <ng-container matColumnDef="lastlogin">
+            <th mat-header-cell *matHeaderCellDef> Last Login </th>
+            <td mat-cell *matCellDef="let element"> {{formatDate(element.last_login)}} </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedCols"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedCols;"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons aria-label="Select student page">
+        </mat-paginator>
+      </div>
+    </div>
+  </mat-sidenav-content>
